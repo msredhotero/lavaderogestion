@@ -1,0 +1,11 @@
+
+#graph, #graph2, #graph3 {
+  width: auto;
+  height: 250px;
+  margin: 20px auto 0 auto;
+}
+pre {
+  height: 0px;
+  overflow: auto;
+  visibility:hidden;
+}
