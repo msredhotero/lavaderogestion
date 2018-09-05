@@ -2,10 +2,10 @@
 -- version 3.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Erstellungszeit: 01. Sep 2016 um 23:51
--- Server Version: 5.5.24-log
--- PHP-Version: 5.4.3
+-- Servidor: localhost
+-- Tiempo de generación: 05-09-2018 a las 05:25:26
+-- Versión del servidor: 5.5.24-log
+-- Versión de PHP: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Datenbank: `sstaller`
+-- Base de datos: `lavadero`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbclientes`
+-- Estructura de tabla para la tabla `dbclientes`
 --
 
 CREATE TABLE IF NOT EXISTS `dbclientes` (
@@ -36,22 +36,23 @@ CREATE TABLE IF NOT EXISTS `dbclientes` (
   `telefono` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `email` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`idcliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `dbclientes`
+-- Volcado de datos para la tabla `dbclientes`
 --
 
 INSERT INTO `dbclientes` (`idcliente`, `apellido`, `nombre`, `nrodocumento`, `fechanacimiento`, `direccion`, `telefono`, `email`) VALUES
 (1, 'Test1 ', 'Test1', 31552466, '1985-05-20', '76', '4830000', 'tst1@123.com'),
 (2, 'Moglie', 'Gustavo', 31454089, '2013-02-14', 'Test 1 ', '132132 46546', '123@test.com'),
 (3, 'Delio', 'Diego', 311111111, '0000-00-00', '123 ne', '12312', '123@test.com'),
-(4, 'Juan', ' 11', 3123, '0000-00-00', '', '', '');
+(4, 'Juan', ' 11', 3123, '0000-00-00', '', '', ''),
+(5, 'safar', 'marcos', 31552466, '1985-05-20', '', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbclientevehiculos`
+-- Estructura de tabla para la tabla `dbclientevehiculos`
 --
 
 CREATE TABLE IF NOT EXISTS `dbclientevehiculos` (
@@ -62,22 +63,23 @@ CREATE TABLE IF NOT EXISTS `dbclientevehiculos` (
   PRIMARY KEY (`idclientevehiculo`),
   KEY `fk_dbclientevehiculos_dbvehiculos1_idx` (`refvehiculos`),
   KEY `fk_dbclientevehiculos_dbclientes1_idx` (`refclientes`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `dbclientevehiculos`
+-- Volcado de datos para la tabla `dbclientevehiculos`
 --
 
 INSERT INTO `dbclientevehiculos` (`idclientevehiculo`, `refclientes`, `refvehiculos`, `activo`) VALUES
 (1, 1, 1, b'1'),
 (2, 2, 2, b'1'),
 (3, 3, 3, b'1'),
-(4, 4, 4, b'1');
+(4, 4, 4, b'1'),
+(5, 5, 5, b'1');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbempleados`
+-- Estructura de tabla para la tabla `dbempleados`
 --
 
 CREATE TABLE IF NOT EXISTS `dbempleados` (
@@ -97,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `dbempleados` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbordenes`
+-- Estructura de tabla para la tabla `dbordenes`
 --
 
 CREATE TABLE IF NOT EXISTS `dbordenes` (
@@ -118,16 +120,16 @@ CREATE TABLE IF NOT EXISTS `dbordenes` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `dbordenes`
+-- Volcado de datos para la tabla `dbordenes`
 --
 
 INSERT INTO `dbordenes` (`idorden`, `numero`, `refclientevehiculos`, `fechacrea`, `fechamodi`, `usuacrea`, `usuamodi`, `detallereparacion`, `refestados`, `precio`, `anticipo`) VALUES
-(2, 'ORD000001', 2, '2016-09-01 00:00:00', '2016-09-01 00:00:00', 'Administrador', 'Administrador', 'Cambio de filtro de aire', 2, '1000.00', '150.00');
+(2, 'ORD000001', 2, '2016-09-01 00:00:00', '2016-09-01 00:00:00', 'Administrador', 'Administrador', 'Cambio de filtro de aire', 1, '1000.00', '150.00');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbordenesresponsables`
+-- Estructura de tabla para la tabla `dbordenesresponsables`
 --
 
 CREATE TABLE IF NOT EXISTS `dbordenesresponsables` (
@@ -142,7 +144,23 @@ CREATE TABLE IF NOT EXISTS `dbordenesresponsables` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbpagos`
+-- Estructura de tabla para la tabla `dbotrosingresosegresos`
+--
+
+CREATE TABLE IF NOT EXISTS `dbotrosingresosegresos` (
+  `idotrosingresosegresos` int(11) NOT NULL AUTO_INCREMENT,
+  `reftipomovimientos` int(11) NOT NULL,
+  `monto` decimal(18,2) NOT NULL,
+  `fechacrea` datetime NOT NULL,
+  `usuacrea` varchar(60) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idotrosingresosegresos`),
+  KEY `fk_ie_movimientos_idx` (`reftipomovimientos`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dbpagos`
 --
 
 CREATE TABLE IF NOT EXISTS `dbpagos` (
@@ -152,19 +170,109 @@ CREATE TABLE IF NOT EXISTS `dbpagos` (
   `fechapago` datetime NOT NULL,
   PRIMARY KEY (`idpago`),
   KEY `fk_dbpagos_dbordenes_idx` (`refordenes`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=4 ;
 
 --
--- Daten für Tabelle `dbpagos`
+-- Volcado de datos para la tabla `dbpagos`
 --
 
 INSERT INTO `dbpagos` (`idpago`, `refordenes`, `pago`, `fechapago`) VALUES
-(1, 2, '400.00', '2016-09-01 17:10:00');
+(1, 2, '400.00', '2016-09-01 17:10:00'),
+(2, 2, '200.00', '2016-09-01 23:00:00'),
+(3, 2, '400.00', '2016-09-01 22:40:00');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbusuarios`
+-- Estructura de tabla para la tabla `dbproveedores`
+--
+
+CREATE TABLE IF NOT EXISTS `dbproveedores` (
+  `idproveedor` int(11) NOT NULL AUTO_INCREMENT,
+  `razonsocial` varchar(50) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `cuit` varchar(11) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `telefono` varchar(10) DEFAULT NULL,
+  `celular` varchar(15) DEFAULT NULL,
+  `email` varchar(80) DEFAULT NULL,
+  `observaciones` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`idproveedor`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `dbproveedores`
+--
+
+INSERT INTO `dbproveedores` (`idproveedor`, `razonsocial`, `nombre`, `apellido`, `cuit`, `direccion`, `telefono`, `celular`, `email`, `observaciones`) VALUES
+(1, 'asdasd', 'asdasd', 'asdasd', '', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dbsocios`
+--
+
+CREATE TABLE IF NOT EXISTS `dbsocios` (
+  `idsocio` int(11) NOT NULL AUTO_INCREMENT,
+  `apellido` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `nrodocumento` varchar(11) COLLATE utf8_spanish_ci NOT NULL,
+  `cuit` varchar(11) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `domicilio` varchar(120) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `telefono` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `direccion` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`idsocio`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dbturnos`
+--
+
+CREATE TABLE IF NOT EXISTS `dbturnos` (
+  `idturno` int(11) NOT NULL AUTO_INCREMENT,
+  `fechaingreso` datetime NOT NULL,
+  `refclientes` int(11) NOT NULL,
+  `refvehiculos` int(11) NOT NULL,
+  `horaentrada` datetime DEFAULT NULL,
+  `horasalida` datetime DEFAULT NULL,
+  `usuacrea` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
+  `refestados` int(11) NOT NULL,
+  `descuento` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `reftipomovimientos` int(11) NOT NULL,
+  PRIMARY KEY (`idturno`),
+  KEY `fk_t_clientes_idx` (`refclientes`),
+  KEY `fk_t_estados_idx` (`refestados`),
+  KEY `fk_t_vehiculos_idx` (`refvehiculos`),
+  KEY `fk_t_movimientos_idx` (`reftipomovimientos`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dbturnosdetalles`
+--
+
+CREATE TABLE IF NOT EXISTS `dbturnosdetalles` (
+  `idturnodetalle` int(11) NOT NULL AUTO_INCREMENT,
+  `refturnos` int(11) NOT NULL,
+  `refservicios` int(11) NOT NULL,
+  `descripcion` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
+  `costo` decimal(18,2) NOT NULL,
+  `tiempo` int(11) NOT NULL,
+  PRIMARY KEY (`idturnodetalle`),
+  KEY `fk_td_turnos_idx` (`refturnos`),
+  KEY `fk_td_servicios_idx` (`refservicios`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dbusuarios`
 --
 
 CREATE TABLE IF NOT EXISTS `dbusuarios` (
@@ -179,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `dbusuarios` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `dbusuarios`
+-- Volcado de datos para la tabla `dbusuarios`
 --
 
 INSERT INTO `dbusuarios` (`idusuario`, `usuario`, `password`, `refroles`, `email`, `nombrecompleto`) VALUES
@@ -188,7 +296,7 @@ INSERT INTO `dbusuarios` (`idusuario`, `usuario`, `password`, `refroles`, `email
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `dbvehiculos`
+-- Estructura de tabla para la tabla `dbvehiculos`
 --
 
 CREATE TABLE IF NOT EXISTS `dbvehiculos` (
@@ -197,25 +305,27 @@ CREATE TABLE IF NOT EXISTS `dbvehiculos` (
   `refmodelo` int(11) NOT NULL,
   `reftipovehiculo` int(11) NOT NULL,
   `anio` smallint(6) NOT NULL,
+  `observaciones` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idvehiculo`),
   KEY `fk_dbvehiculos_tbmodelo1_idx` (`refmodelo`),
   KEY `fk_dbvehiculos_tbtipovehiculo1_idx` (`reftipovehiculo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `dbvehiculos`
+-- Volcado de datos para la tabla `dbvehiculos`
 --
 
-INSERT INTO `dbvehiculos` (`idvehiculo`, `patente`, `refmodelo`, `reftipovehiculo`, `anio`) VALUES
-(1, 'AAA111', 8, 1, 2010),
-(2, 'GHQ592', 6, 1, 2007),
-(3, 'GGG111', 8, 1, 2011),
-(4, 'GHQ0000', 2, 1, 2007);
+INSERT INTO `dbvehiculos` (`idvehiculo`, `patente`, `refmodelo`, `reftipovehiculo`, `anio`, `observaciones`) VALUES
+(1, 'AAA111', 8, 1, 2010, NULL),
+(2, 'GHQ592', 6, 1, 2007, NULL),
+(3, 'GGG111', 8, 1, 2011, NULL),
+(4, 'GHQ0000', 2, 1, 2007, NULL),
+(5, 'NAT681', 10, 1, 2013, 'asdasdasd');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `predio_menu`
+-- Estructura de tabla para la tabla `predio_menu`
 --
 
 CREATE TABLE IF NOT EXISTS `predio_menu` (
@@ -227,10 +337,10 @@ CREATE TABLE IF NOT EXISTS `predio_menu` (
   `hover` varchar(45) COLLATE utf8_spanish_ci DEFAULT NULL,
   `permiso` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`idmenu`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=31 ;
 
 --
--- Daten für Tabelle `predio_menu`
+-- Volcado de datos para la tabla `predio_menu`
 --
 
 INSERT INTO `predio_menu` (`idmenu`, `url`, `icono`, `nombre`, `Orden`, `hover`, `permiso`) VALUES
@@ -238,17 +348,22 @@ INSERT INTO `predio_menu` (`idmenu`, `url`, `icono`, `nombre`, `Orden`, `hover`,
 (13, '../index.php', 'icodashboard', 'Dashboard', 1, NULL, 'Administrador'),
 (16, '../clientes/', 'icojugadores', 'Clientes', 2, NULL, 'Administrador'),
 (17, '../vehiculos/', 'icovehiculos', 'Vehiculos', 3, NULL, 'Administrador'),
-(18, '../ordenes/', 'icoreparacion', 'Ordenes', 4, NULL, 'Administrador'),
 (19, '../marcas/', 'icomarca', 'Marcas', 5, NULL, 'Administrador'),
 (20, '../modelos/', 'icomodelo', 'Modelos', 6, NULL, 'Administrador'),
-(21, '../reportes/', 'icoreportes', 'Reportes', 10, NULL, 'Administrador'),
+(21, '../reportes/', 'icoreportes', 'Reportes', 29, NULL, 'Administrador'),
 (22, '../usuarios/', 'icousuarios', 'Usuarios', 7, NULL, 'Administrador'),
-(23, '../pagos/', 'icomarca', 'Pagos', 8, NULL, 'Administrador');
+(24, '../proveedores/', 'icojugadores', 'Proveedores', 11, NULL, 'Administrador'),
+(25, '../empleados/', 'icousuarios', 'Empleados', 12, NULL, 'Administrador'),
+(26, '../socios/', 'icousuarios', 'Socios', 13, NULL, 'Administrador'),
+(27, '../ingresosingresos/', 'icopagos', 'Ingresos - Egresos', 8, NULL, 'Administrador'),
+(28, '../servicios/', 'icopagos', 'Servicios', 15, NULL, 'Administrador'),
+(29, '../movimientos/', 'icopagos', 'Tipo de Movimientos', 16, NULL, 'Administrador'),
+(30, '../turnos/', 'icopagos', 'Turnos', 4, NULL, 'Administrador');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `tbestados`
+-- Estructura de tabla para la tabla `tbestados`
 --
 
 CREATE TABLE IF NOT EXISTS `tbestados` (
@@ -258,7 +373,7 @@ CREATE TABLE IF NOT EXISTS `tbestados` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `tbestados`
+-- Volcado de datos para la tabla `tbestados`
 --
 
 INSERT INTO `tbestados` (`idestado`, `estado`) VALUES
@@ -271,7 +386,7 @@ INSERT INTO `tbestados` (`idestado`, `estado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `tbmarca`
+-- Estructura de tabla para la tabla `tbmarca`
 --
 
 CREATE TABLE IF NOT EXISTS `tbmarca` (
@@ -279,10 +394,10 @@ CREATE TABLE IF NOT EXISTS `tbmarca` (
   `marca` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `activo` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`idmarca`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=11 ;
 
 --
--- Daten für Tabelle `tbmarca`
+-- Volcado de datos para la tabla `tbmarca`
 --
 
 INSERT INTO `tbmarca` (`idmarca`, `marca`, `activo`) VALUES
@@ -293,12 +408,13 @@ INSERT INTO `tbmarca` (`idmarca`, `marca`, `activo`) VALUES
 (6, 'VW', b'1'),
 (7, 'Honda', b'1'),
 (8, 'Peugeot', b'1'),
-(9, 'Seat', b'1');
+(9, 'Seat', b'1'),
+(10, 'Citroen', b'1');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `tbmodelo`
+-- Estructura de tabla para la tabla `tbmodelo`
 --
 
 CREATE TABLE IF NOT EXISTS `tbmodelo` (
@@ -308,10 +424,10 @@ CREATE TABLE IF NOT EXISTS `tbmodelo` (
   `activo` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`idmodelo`),
   KEY `fk_tbmodelo_tbmarca_idx` (`refmarca`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
 --
--- Daten für Tabelle `tbmodelo`
+-- Volcado de datos para la tabla `tbmodelo`
 --
 
 INSERT INTO `tbmodelo` (`idmodelo`, `modelo`, `refmarca`, `activo`) VALUES
@@ -323,12 +439,13 @@ INSERT INTO `tbmodelo` (`idmodelo`, `modelo`, `refmarca`, `activo`) VALUES
 (6, 'Civic ', 7, b'1'),
 (7, '308', 2, b'1'),
 (8, 'Clio', 5, b'1'),
-(9, 'ibiza', 9, b'1');
+(9, 'ibiza', 9, b'1'),
+(10, 'C3', 10, b'1');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `tbroles`
+-- Estructura de tabla para la tabla `tbroles`
 --
 
 CREATE TABLE IF NOT EXISTS `tbroles` (
@@ -339,7 +456,7 @@ CREATE TABLE IF NOT EXISTS `tbroles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Daten für Tabelle `tbroles`
+-- Volcado de datos para la tabla `tbroles`
 --
 
 INSERT INTO `tbroles` (`idrol`, `descripcion`, `activo`) VALUES
@@ -349,7 +466,35 @@ INSERT INTO `tbroles` (`idrol`, `descripcion`, `activo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `tbtipovehiculo`
+-- Estructura de tabla para la tabla `tbservicios`
+--
+
+CREATE TABLE IF NOT EXISTS `tbservicios` (
+  `idservicio` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(60) COLLATE utf8_spanish_ci NOT NULL,
+  `costo` decimal(18,2) NOT NULL,
+  `tiempo` int(11) NOT NULL,
+  `observaciones` varchar(250) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`idservicio`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbtipomovimientos`
+--
+
+CREATE TABLE IF NOT EXISTS `tbtipomovimientos` (
+  `idtipomovimiento` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(60) COLLATE utf8_spanish_ci NOT NULL,
+  `categoria` varchar(2) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idtipomovimiento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbtipovehiculo`
 --
 
 CREATE TABLE IF NOT EXISTS `tbtipovehiculo` (
@@ -360,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `tbtipovehiculo` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
--- Daten für Tabelle `tbtipovehiculo`
+-- Volcado de datos para la tabla `tbtipovehiculo`
 --
 
 INSERT INTO `tbtipovehiculo` (`idtipovehiculo`, `tipovehiculo`, `activo`) VALUES
@@ -371,51 +516,73 @@ INSERT INTO `tbtipovehiculo` (`idtipovehiculo`, `tipovehiculo`, `activo`) VALUES
 (5, 'Pick-up', b'1');
 
 --
--- Constraints der exportierten Tabellen
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints der Tabelle `dbclientevehiculos`
+-- Filtros para la tabla `dbclientevehiculos`
 --
 ALTER TABLE `dbclientevehiculos`
   ADD CONSTRAINT `fk_dbclientevehiculos_dbclientes1` FOREIGN KEY (`refclientes`) REFERENCES `dbclientes` (`idcliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_dbclientevehiculos_dbvehiculos1` FOREIGN KEY (`refvehiculos`) REFERENCES `dbvehiculos` (`idvehiculo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints der Tabelle `dbordenes`
+-- Filtros para la tabla `dbordenes`
 --
 ALTER TABLE `dbordenes`
   ADD CONSTRAINT `fk_dbordenes_dbclientevehiculos1` FOREIGN KEY (`refclientevehiculos`) REFERENCES `dbclientevehiculos` (`idclientevehiculo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_dbordenes_tbestados1` FOREIGN KEY (`refestados`) REFERENCES `tbestados` (`idestado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints der Tabelle `dbordenesresponsables`
+-- Filtros para la tabla `dbordenesresponsables`
 --
 ALTER TABLE `dbordenesresponsables`
   ADD CONSTRAINT `fk_dbordenesresponsables_dbempleados` FOREIGN KEY (`refempleados`) REFERENCES `dbempleados` (`idempleado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_dbordenesresponsables_dbordenes1` FOREIGN KEY (`refordenes`) REFERENCES `dbordenes` (`idorden`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints der Tabelle `dbpagos`
+-- Filtros para la tabla `dbotrosingresosegresos`
+--
+ALTER TABLE `dbotrosingresosegresos`
+  ADD CONSTRAINT `fk_ie_movimientos` FOREIGN KEY (`reftipomovimientos`) REFERENCES `tbtipomovimientos` (`idtipomovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `dbpagos`
 --
 ALTER TABLE `dbpagos`
   ADD CONSTRAINT `fk_dbpagos_dbordenes` FOREIGN KEY (`refordenes`) REFERENCES `dbordenes` (`idorden`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints der Tabelle `dbusuarios`
+-- Filtros para la tabla `dbturnos`
+--
+ALTER TABLE `dbturnos`
+  ADD CONSTRAINT `fk_t_clientes` FOREIGN KEY (`refclientes`) REFERENCES `dbclientes` (`idcliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_t_estados` FOREIGN KEY (`refestados`) REFERENCES `tbestados` (`idestado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_t_vehiculos` FOREIGN KEY (`refvehiculos`) REFERENCES `dbvehiculos` (`idvehiculo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_t_movimientos` FOREIGN KEY (`reftipomovimientos`) REFERENCES `tbtipomovimientos` (`idtipomovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `dbturnosdetalles`
+--
+ALTER TABLE `dbturnosdetalles`
+  ADD CONSTRAINT `fk_td_turnos` FOREIGN KEY (`refturnos`) REFERENCES `dbturnos` (`idturno`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_td_servicios` FOREIGN KEY (`refservicios`) REFERENCES `tbservicios` (`idservicio`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `dbusuarios`
 --
 ALTER TABLE `dbusuarios`
   ADD CONSTRAINT `fk_dbusuarios_tbroles1` FOREIGN KEY (`refroles`) REFERENCES `tbroles` (`idrol`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints der Tabelle `dbvehiculos`
+-- Filtros para la tabla `dbvehiculos`
 --
 ALTER TABLE `dbvehiculos`
   ADD CONSTRAINT `fk_dbvehiculos_tbmodelo1` FOREIGN KEY (`refmodelo`) REFERENCES `tbmodelo` (`idmodelo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_dbvehiculos_tbtipovehiculo1` FOREIGN KEY (`reftipovehiculo`) REFERENCES `tbtipovehiculo` (`idtipovehiculo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints der Tabelle `tbmodelo`
+-- Filtros para la tabla `tbmodelo`
 --
 ALTER TABLE `tbmodelo`
   ADD CONSTRAINT `fk_tbmodelo_tbmarca` FOREIGN KEY (`refmarca`) REFERENCES `tbmarca` (`idmarca`) ON DELETE NO ACTION ON UPDATE NO ACTION;

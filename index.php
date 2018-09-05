@@ -20,7 +20,7 @@ $servicios = new Servicios();
 
 
 
-<title>Acceso Restringido: Caracol Bienes Raíces</title>
+<title>Acceso Restringido: Bellwash Gestión</title>
 
 
 
@@ -160,62 +160,63 @@ $servicios = new Servicios();
 </div>-->
 
 
-<div class="logueo" align="center">
-<br>
-<br>
-<br>
-	<section style="width:700px; padding-top:10px; padding-top:60px;padding:25px;
-background-color: #ffffff; border:1px solid #101010; box-shadow: 2px 2px 3px #333;-webkit-box-shadow: 2px 2px 3px #333;-moz-box-shadow: 2px 2px 3px #333;">
-			<div id="error" style="text-align:left; color:#666;">
-            
-            </div>
+<div class="row" align="center" style="margin-top:50px;">
+	<div class="col-md-2 col-xs-1"></div>
 
-            <div align="center">
-            	<img src="imagenes/logo-provisorio.jpg" width="60%">
-				<div align="center"><p style="color:#363636; font-size:28px;">Acceso al panel de control</p></div>
-                <br>
-            </div>
-			<form role="form" class="form-horizontal">
-              
-
-              <div class="form-group">
-                <label for="usuario" class="col-md-2 control-label" style="color:#363636;text-align:left;">E-Mail</label>
-                <div class="col-lg-7">
-                  <input type="email" class="form-control" id="email" name="email" 
-                         placeholder="E-Mail">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="ejemplo_password_2" class="col-md-2 control-label" style="color:#363636;text-align:left;">Contraseña</label>
-                <div class="col-lg-7">
-                  <input type="password" class="form-control" id="pass" name="pass" 
-                         placeholder="password">
-                </div>
-              </div>
-              
-              
-              
-              <div class="form-group">
-              	<label for="olvido" class="control-label" style="color:#363636">¿Has olvidado tu contraseña?. <a href="recuperarpassword.php">Recuperar.</a></label>
-              </div>
-             
-              <div class="form-group">
-                <div class="col-md-12">
-                  <button type="button" class="btn btn-default" id="login">Login</button>
-                </div>
-              </div>
+	<div class="col-md-8 col-xs-10">
+		<div style="padding-top:10px; padding-top:60px;padding:25px;
+	background-color: #ffffff; border:1px solid #101010; box-shadow: 2px 2px 3px #333;-webkit-box-shadow: 2px 2px 3px #333;-moz-box-shadow: 2px 2px 3px #333;">
+				<div id="error" style="text-align:left; color:#666;">
 				
-                <div id="load">
-                
-                </div>
+				</div>
 
-            </form>
+				<div align="center">
+					<img src="imagenes/candado.png" width="20%">
+					<div align="center"><p style="color:#363636; font-size:28px;">Acceso al Panel de Control</p></div>
+					<br>
+				</div>
+				<form role="form" class="form-horizontal">
+				
 
-     </section>
-     <br>
-     <br>
-     <br>
+				<div class="form-group">
+					<label for="usuario" class="col-md-2 control-label" style="color:#363636;text-align:left;">E-Mail</label>
+					<div class="col-lg-7">
+					<input type="email" class="form-control" id="email" name="email" 
+							placeholder="E-Mail">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="ejemplo_password_2" class="col-md-2 control-label" style="color:#363636;text-align:left;">Contraseña</label>
+					<div class="col-lg-7">
+					<input type="password" class="form-control" id="pass" name="pass" 
+							placeholder="password">
+					</div>
+				</div>
+				
+				
+				
+				<div class="form-group">
+					<label for="olvido" class="control-label" style="color:#363636">¿Has olvidado tu contraseña?. <a href="recuperarpassword.php">Recuperar.</a></label>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-12">
+					<button type="button" class="btn btn-default" id="login">Login</button>
+					</div>
+				</div>
+					
+					<div id="load">
+					
+					</div>
+
+				</form>
+
+		</div>
+	</div>
+	 
+	 <div class="col-md-2 col-xs-1"></div>
+
      </div>
 </div><!-- fin del content -->
 

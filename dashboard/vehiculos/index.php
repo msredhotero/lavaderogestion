@@ -121,7 +121,9 @@ if ($_SESSION['refroll_predio'] != 1) {
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="../../css/chosen.css">
 	<style type="text/css">
-		
+		.chosen-single {
+			z-index: 9999999;
+		}
   
 		
 	</style>
@@ -162,7 +164,7 @@ if ($_SESSION['refroll_predio'] != 1) {
             <div style="width:100%; height:2px; background-color:#e9e9e9; border-bottom:1px solid #797997;"></div>
             <div class="row">
             	<div class="form-group col-md-6">
-                    <label for="refclientes" class="control-label" style="text-align:left"><span class="glyphicon glyphicon-user"></span> Lista de Clientes</label>
+                    <label for="refclientes" class="control-label" style="text-align:left; z-index:50000;"><span class="glyphicon glyphicon-user"></span> Lista de Clientes</label>
                     <div class="input-group col-md-12" style="margin-top:5px;">
                         <select data-placeholder="selecione el cliente..." id="refclientes" name="refclientes" class="chosen-select form-control" style="width:450px;" tabindex="2">
             				<option value=""></option>
@@ -189,7 +191,8 @@ if ($_SESSION['refroll_predio'] != 1) {
                     </li>
                 </ul>
                 </div>
-            </div>
+			</div>
+			<div style="padding-bottom: 80px;"></div>
             </form>
     	</div>
     </div>
@@ -383,6 +386,7 @@ $(document).ready(function(){
 		}
     });
 
+
 });
 </script>
 <script src="../../js/chosen.jquery.js" type="text/javascript"></script>
@@ -396,7 +400,9 @@ $(document).ready(function(){
     }
     for (var selector in config) {
       $(selector).chosen(config[selector]);
-    }
+	}
+	
+	
   </script>
 <?php } ?>
 </body>

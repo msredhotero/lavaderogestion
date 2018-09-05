@@ -48,6 +48,13 @@ $tablasAr	= array("clientes"        => "dbclientes",
 "tipovehiculo"    => "tbtipovehiculo",
 "empleados"		  => "dbempleados",
 "ordenesresponsables" => "dbordenesresponsables",
+"otrosingresosegresos" => "dbotrosingresosegresos",
+"turnosdetalles"	=> "dbturnosdetalles",
+"turnos"	=>	"dbturnos",
+"servicios"	=>	"tbservicios",
+"tipomovimientos"	=>	"tbtipomovimientos",
+"socios"	=>	"dbsocios",
+"proveedores"	=>	"dbproveedores",
 "pagos"			  => "dbpagos");
 
 
@@ -66,6 +73,13 @@ function recursiveTablas($ar, $tabla, $aliasTablaMadre) {
 	"tipovehiculo"    => "tbtipovehiculo",
 	"empleados"		  => "dbempleados",
 	"ordenesresponsables" => "dbordenesresponsables",
+	"otrosingresosegresos" => "dbotrosingresosegresos",
+	"turnosdetalles"	=> "dbturnosdetalles",
+	"turnos"	=>	"dbturnos",
+	"servicios"	=>	"tbservicios",
+	"tipomovimientos"	=>	"tbtipomovimientos",
+	"socios"	=>	"dbsocios",
+	"proveedores"	=>	"dbproveedores",
 	"pagos"			  => "dbpagos");
 
 	$tablasArAux	= array("clientes"        => 1,        
@@ -81,6 +95,13 @@ function recursiveTablas($ar, $tabla, $aliasTablaMadre) {
 	"tipovehiculo"    => 1,
 	"empleados"		  => 1,
 	"ordenesresponsables" => 4,
+	"otrosingresosegresos" => 2,
+	"turnosdetalles"	=> 3,
+	"turnos"	=>	5,
+	"servicios"	=>	1,
+	"tipomovimientos"	=>	1,
+	"socios"	=>	1,
+	"proveedores"	=>	1,
 	"pagos"			  => 1);
 	
 	$inner= '';
@@ -111,7 +132,7 @@ $ajaxFuncionesController = '';
 
 $servicios	= "Referencias";
 
-$sqlMapaer	= "SHOW FULL TABLES FROM sstaller";
+$sqlMapaer	= "SHOW FULL TABLES FROM lavadero";
 $resMapeo 	=	query($sqlMapaer,0);
 
 $aliasTablaMadre = '';

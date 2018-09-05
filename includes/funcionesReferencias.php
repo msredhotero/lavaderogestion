@@ -20,7 +20,387 @@ function GUID()
 }
 
 
+/* PARA Otrosingresosegresos */
 
+function insertarOtrosingresosegresos($reftipomovimientos,$monto,$fechacrea,$usuacrea) {
+	$sql = "insert into dbotrosingresosegresos(idotrosingresosegresos,reftipomovimientos,monto,fechacrea,usuacrea)
+	values ('',".$reftipomovimientos.",".$monto.",'".($fechacrea)."','".($usuacrea)."')";
+	$res = $this->query($sql,1);
+	return $res;
+	}
+	
+	
+	function modificarOtrosingresosegresos($id,$reftipomovimientos,$monto,$fechacrea,$usuacrea) {
+	$sql = "update dbotrosingresosegresos
+	set
+	reftipomovimientos = ".$reftipomovimientos.",monto = ".$monto.",fechacrea = '".($fechacrea)."',usuacrea = '".($usuacrea)."'
+	where idotrosingresosegresos =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function eliminarOtrosingresosegresos($id) {
+	$sql = "delete from dbotrosingresosegresos where idotrosingresosegresos =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerOtrosingresosegresos() {
+	$sql = "select
+	o.idotrosingresosegresos,
+	o.reftipomovimientos,
+	o.monto,
+	o.fechacrea,
+	o.usuacrea
+	from dbotrosingresosegresos o
+	inner join tbtipomovimientos tip ON tip.idtipomovimiento = o.reftipomovimientos
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerOtrosingresosegresosPorId($id) {
+	$sql = "select idotrosingresosegresos,reftipomovimientos,monto,fechacrea,usuacrea from dbotrosingresosegresos where idotrosingresosegresos =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: dbotrosingresosegresos*/
+
+
+	/* PARA Proveedores */
+
+function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observaciones) {
+	$sql = "insert into dbproveedores(idproveedor,razonsocial,nombre,apellido,cuit,direccion,telefono,celular,email,observaciones)
+	values ('','".($razonsocial)."','".($nombre)."','".($apellido)."','".($cuit)."','".($direccion)."','".($telefono)."','".($celular)."','".($email)."','".($observaciones)."')";
+	$res = $this->query($sql,1);
+	return $res;
+	}
+	
+	
+	function modificarProveedores($id,$razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observaciones) {
+	$sql = "update dbproveedores
+	set
+	razonsocial = '".($razonsocial)."',nombre = '".($nombre)."',apellido = '".($apellido)."',cuit = '".($cuit)."',direccion = '".($direccion)."',telefono = '".($telefono)."',celular = '".($celular)."',email = '".($email)."',observaciones = '".($observaciones)."'
+	where idproveedor =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function eliminarProveedores($id) {
+	$sql = "delete from dbproveedores where idproveedor =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerProveedores() {
+	$sql = "select
+	p.idproveedor,
+	p.razonsocial,
+	p.nombre,
+	p.apellido,
+	p.cuit,
+	p.direccion,
+	p.telefono,
+	p.celular,
+	p.email,
+	p.observaciones
+	from dbproveedores p
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerProveedoresPorId($id) {
+	$sql = "select idproveedor,razonsocial,nombre,apellido,cuit,direccion,telefono,celular,email,observaciones from dbproveedores where idproveedor =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: dbproveedores*/
+	
+	
+	/* PARA Socios */
+	
+	function insertarSocios($apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email) {
+	$sql = "insert into dbsocios(idsocio,apellido,nombre,nrodocumento,cuit,domicilio,telefono,direccion,email)
+	values ('','".($apellido)."','".($nombre)."','".($nrodocumento)."','".($cuit)."','".($domicilio)."','".($telefono)."','".($direccion)."','".($email)."')";
+	$res = $this->query($sql,1);
+	return $res;
+	}
+	
+	
+	function modificarSocios($id,$apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email) {
+	$sql = "update dbsocios
+	set
+	apellido = '".($apellido)."',nombre = '".($nombre)."',nrodocumento = '".($nrodocumento)."',cuit = '".($cuit)."',domicilio = '".($domicilio)."',telefono = '".($telefono)."',direccion = '".($direccion)."',email = '".($email)."'
+	where idsocio =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function eliminarSocios($id) {
+	$sql = "delete from dbsocios where idsocio =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerSocios() {
+	$sql = "select
+	s.idsocio,
+	s.apellido,
+	s.nombre,
+	s.nrodocumento,
+	s.cuit,
+	s.domicilio,
+	s.telefono,
+	s.direccion,
+	s.email
+	from dbsocios s
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerSociosPorId($id) {
+	$sql = "select idsocio,apellido,nombre,nrodocumento,cuit,domicilio,telefono,direccion,email from dbsocios where idsocio =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: dbsocios*/
+	
+	
+	/* PARA Turnos */
+	
+	function insertarTurnos($fechaingreso,$refclientes,$refvehiculos,$horaentrada,$horasalida,$usuacrea,$refestados,$descuento,$reftipomovimientos) {
+	$sql = "insert into dbturnos(idturno,fechaingreso,refclientes,refvehiculos,horaentrada,horasalida,usuacrea,refestados,descuento,reftipomovimientos)
+	values ('','".($fechaingreso)."',".$refclientes.",".$refvehiculos.",'".($horaentrada)."','".($horasalida)."','".($usuacrea)."',".$refestados.",".$descuento.",".$reftipomovimientos.")";
+	$res = $this->query($sql,1);
+	return $res;
+	}
+	
+	
+	function modificarTurnos($id,$fechaingreso,$refclientes,$refvehiculos,$horaentrada,$horasalida,$usuacrea,$refestados,$descuento,$reftipomovimientos) {
+	$sql = "update dbturnos
+	set
+	fechaingreso = '".($fechaingreso)."',refclientes = ".$refclientes.",refvehiculos = ".$refvehiculos.",horaentrada = '".($horaentrada)."',horasalida = '".($horasalida)."',usuacrea = '".($usuacrea)."',refestados = ".$refestados.",descuento = ".$descuento.",reftipomovimientos = ".$reftipomovimientos."
+	where idturno =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function eliminarTurnos($id) {
+	$sql = "delete from dbturnos where idturno =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerTurnos() {
+	$sql = "select
+	t.idturno,
+	t.fechaingreso,
+	t.refclientes,
+	t.refvehiculos,
+	t.horaentrada,
+	t.horasalida,
+	t.usuacrea,
+	t.refestados,
+	t.descuento,
+	t.reftipomovimientos
+	from dbturnos t
+	inner join dbclientes cli ON cli.idcliente = t.refclientes
+	inner join dbvehiculos veh ON veh.idvehiculo = t.refvehiculos
+	inner join tbmodelo mo ON mo.idmodelo = veh.refmodelo
+	inner join tbtipovehiculo ti ON ti.idtipovehiculo = veh.reftipovehiculo
+	inner join tbestados est ON est.idestado = t.refestados
+	inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerTurnosPorId($id) {
+	$sql = "select idturno,fechaingreso,refclientes,refvehiculos,horaentrada,horasalida,usuacrea,refestados,descuento,reftipomovimientos from dbturnos where idturno =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: dbturnos*/
+	
+	
+	/* PARA Turnosdetalles */
+	
+	function insertarTurnosdetalles($refturnos,$refservicios,$descripcion,$costo,$tiempo) {
+	$sql = "insert into dbturnosdetalles(idturnodetalle,refturnos,refservicios,descripcion,costo,tiempo)
+	values ('',".$refturnos.",".$refservicios.",'".($descripcion)."',".$costo.",".$tiempo.")";
+	$res = $this->query($sql,1);
+	return $res;
+	}
+	
+	
+	function modificarTurnosdetalles($id,$refturnos,$refservicios,$descripcion,$costo,$tiempo) {
+	$sql = "update dbturnosdetalles
+	set
+	refturnos = ".$refturnos.",refservicios = ".$refservicios.",descripcion = '".($descripcion)."',costo = ".$costo.",tiempo = ".$tiempo."
+	where idturnodetalle =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function eliminarTurnosdetalles($id) {
+	$sql = "delete from dbturnosdetalles where idturnodetalle =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerTurnosdetalles() {
+	$sql = "select
+	t.idturnodetalle,
+	t.refturnos,
+	t.refservicios,
+	t.descripcion,
+	t.costo,
+	t.tiempo
+	from dbturnosdetalles t
+	inner join dbturnos tur ON tur.idturno = t.refturnos
+	inner join dbclientes cl ON cl.idcliente = tur.refclientes
+	inner join dbvehiculos ve ON ve.idvehiculo = tur.refvehiculos
+	inner join tbestados es ON es.idestado = tur.refestados
+	inner join tbtipomovimientos ti ON ti.idtipomovimiento = tur.reftipomovimientos
+	inner join tbservicios ser ON ser.idservicio = t.refservicios
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerTurnosdetallesPorId($id) {
+	$sql = "select idturnodetalle,refturnos,refservicios,descripcion,costo,tiempo from dbturnosdetalles where idturnodetalle =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: dbturnosdetalles*/
+
+
+	/* PARA Servicios */
+
+function insertarServicios($descripcion,$costo,$tiempo,$observaciones) {
+	$sql = "insert into tbservicios(idservicio,descripcion,costo,tiempo,observaciones)
+	values ('','".($descripcion)."',".$costo.",".$tiempo.",'".($observaciones)."')";
+	$res = $this->query($sql,1);
+	return $res;
+	}
+	
+	
+	function modificarServicios($id,$descripcion,$costo,$tiempo,$observaciones) {
+	$sql = "update tbservicios
+	set
+	descripcion = '".($descripcion)."',costo = ".$costo.",tiempo = ".$tiempo.",observaciones = '".($observaciones)."'
+	where idservicio =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function eliminarServicios($id) {
+	$sql = "delete from tbservicios where idservicio =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerServicios() {
+	$sql = "select
+	s.idservicio,
+	s.descripcion,
+	s.costo,
+	s.tiempo,
+	s.observaciones
+	from tbservicios s
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerServiciosPorId($id) {
+	$sql = "select idservicio,descripcion,costo,tiempo,observaciones from tbservicios where idservicio =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: tbservicios*/
+	
+	
+	/* PARA Tipomovimientos */
+	
+	function insertarTipomovimientos($descripcion,$categoria) {
+	$sql = "insert into tbtipomovimientos(idtipomovimiento,descripcion,categoria)
+	values ('','".($descripcion)."','".($categoria)."')";
+	$res = $this->query($sql,1);
+	return $res;
+	}
+	
+	
+	function modificarTipomovimientos($id,$descripcion,$categoria) {
+	$sql = "update tbtipomovimientos
+	set
+	descripcion = '".($descripcion)."',categoria = '".($categoria)."'
+	where idtipomovimiento =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function eliminarTipomovimientos($id) {
+	$sql = "delete from tbtipomovimientos where idtipomovimiento =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerTipomovimientos() {
+	$sql = "select
+	t.idtipomovimiento,
+	t.descripcion,
+	t.categoria
+	from tbtipomovimientos t
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	
+	function traerTipomovimientosPorId($id) {
+	$sql = "select idtipomovimiento,descripcion,categoria from tbtipomovimientos where idtipomovimiento =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: tbtipomovimientos*/
 
 
 /* PARA Clientes */
@@ -358,18 +738,18 @@ return $res;
 
 /* PARA Vehiculos */
 
-function insertarVehiculos($patente,$refmodelo,$reftipovehiculo,$anio) {
-$sql = "insert into dbvehiculos(idvehiculo,patente,refmodelo,reftipovehiculo,anio)
-values ('','".(strtoupper($patente))."',".$refmodelo.",".$reftipovehiculo.",".$anio.")";
+function insertarVehiculos($patente,$refmodelo,$reftipovehiculo,$anio,$observaciones) {
+$sql = "insert into dbvehiculos(idvehiculo,patente,refmodelo,reftipovehiculo,anio,observaciones)
+values ('','".(strtoupper($patente))."',".$refmodelo.",".$reftipovehiculo.",".$anio.",'".$observaciones."')";
 $res = $this->query($sql,1);
 return $res;
 }
 
 
-function modificarVehiculos($id,$patente,$refmodelo,$reftipovehiculo,$anio) {
+function modificarVehiculos($id,$patente,$refmodelo,$reftipovehiculo,$anio,$observaciones) {
 $sql = "update dbvehiculos
 set
-patente = '".(strtoupper($patente))."',refmodelo = ".$refmodelo.",reftipovehiculo = ".$reftipovehiculo.",anio = ".$anio."
+patente = '".(strtoupper($patente))."',refmodelo = ".$refmodelo.",reftipovehiculo = ".$reftipovehiculo.",anio = ".$anio.",observaciones = '".$observaciones."'
 where idvehiculo =".$id;
 $res = $this->query($sql,0);
 return $res;
@@ -389,7 +769,8 @@ v.idvehiculo,
 v.patente,
 v.refmodelo,
 v.reftipovehiculo,
-v.anio
+v.anio,
+v.observaciones
 from dbvehiculos v
 inner join tbmodelo mod ON mod.idmodelo = v.refmodelo
 inner join tbmarca ma ON ma.idmarca = mod.refmarca
@@ -408,7 +789,8 @@ concat(cc.apellido,' ',cc.nombre) as titular,
 ma.marca,
 mo.modelo,
 tip.tipovehiculo,
-v.anio
+v.anio,
+v.observaciones
 from dbvehiculos v
 inner join tbmodelo mo ON mo.idmodelo = v.refmodelo
 inner join tbmarca ma ON ma.idmarca = mo.refmarca
@@ -422,7 +804,7 @@ return $res;
 
 
 function traerVehiculosPorId($id) {
-$sql = "select idvehiculo,patente,refmodelo,reftipovehiculo,anio from dbvehiculos where idvehiculo =".$id;
+$sql = "select idvehiculo,patente,refmodelo,reftipovehiculo,anio,observaciones from dbvehiculos where idvehiculo =".$id;
 $res = $this->query($sql,0);
 return $res;
 }

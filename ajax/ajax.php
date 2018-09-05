@@ -162,10 +162,302 @@ break;
 case 'traerPagosPorOrden':
 traerPagosPorOrden($serviciosReferencias);
 break; 
+
+case 'insertarProveedores':
+insertarProveedores($serviciosReferencias);
+break;
+case 'modificarProveedores':
+modificarProveedores($serviciosReferencias);
+break;
+case 'eliminarProveedores':
+eliminarProveedores($serviciosReferencias);
+break; 
+case 'insertarSocios':
+insertarSocios($serviciosReferencias);
+break;
+case 'modificarSocios':
+modificarSocios($serviciosReferencias);
+break;
+case 'eliminarSocios':
+eliminarSocios($serviciosReferencias);
+break;
+case 'insertarTurnos':
+insertarTurnos($serviciosReferencias);
+break;
+case 'modificarTurnos':
+modificarTurnos($serviciosReferencias);
+break;
+case 'eliminarTurnos':
+eliminarTurnos($serviciosReferencias);
+break;
+case 'insertarTurnosdetalles':
+insertarTurnosdetalles($serviciosReferencias);
+break;
+case 'modificarTurnosdetalles':
+modificarTurnosdetalles($serviciosReferencias);
+break;
+case 'eliminarTurnosdetalles':
+eliminarTurnosdetalles($serviciosReferencias);
+break; 
+case 'insertarServicios':
+insertarServicios($serviciosReferencias);
+break;
+case 'modificarServicios':
+modificarServicios($serviciosReferencias);
+break;
+case 'eliminarServicios':
+eliminarServicios($serviciosReferencias);
+break;
+case 'insertarTipomovimientos':
+insertarTipomovimientos($serviciosReferencias);
+break;
+case 'modificarTipomovimientos':
+modificarTipomovimientos($serviciosReferencias);
+break;
+case 'eliminarTipomovimientos':
+eliminarTipomovimientos($serviciosReferencias);
+break; 
 }
 
 /* Fin */
-/*
+
+
+	function insertarProveedores($serviciosReferencias) {
+		$razonsocial = $_POST['razonsocial'];
+		$nombre = $_POST['nombre'];
+		$apellido = $_POST['apellido'];
+		$cuit = $_POST['cuit'];
+		$direccion = $_POST['direccion'];
+		$telefono = $_POST['telefono'];
+		$celular = $_POST['celular'];
+		$email = $_POST['email'];
+		$observacionces = $_POST['observacionces'];
+		$res = $serviciosReferencias->insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observacionces);
+		if ((integer)$res > 0) {
+		echo '';
+		} else {
+		echo 'Huvo un error al insertar datos';
+		}
+	}
+
+
+	function modificarProveedores($serviciosReferencias) {
+		$id = $_POST['id'];
+		$razonsocial = $_POST['razonsocial'];
+		$nombre = $_POST['nombre'];
+		$apellido = $_POST['apellido'];
+		$cuit = $_POST['cuit'];
+		$direccion = $_POST['direccion'];
+		$telefono = $_POST['telefono'];
+		$celular = $_POST['celular'];
+		$email = $_POST['email'];
+		$observacionces = $_POST['observacionces'];
+		$res = $serviciosReferencias->modificarProveedores($id,$razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observacionces);
+		if ($res == true) {
+		echo '';
+		} else {
+		echo 'Huvo un error al modificar datos';
+		}
+	}
+
+	function eliminarProveedores($serviciosReferencias) {
+		$id = $_POST['id'];
+		$res = $serviciosReferencias->eliminarProveedores($id);
+		echo $res;
+	}
+
+	function insertarSocios($serviciosReferencias) {
+		$apellido = $_POST['apellido'];
+		$nombre = $_POST['nombre'];
+		$nrodocumento = $_POST['nrodocumento'];
+		$cuit = $_POST['cuit'];
+		$domicilio = $_POST['domicilio'];
+		$telefono = $_POST['telefono'];
+		$direccion = $_POST['direccion'];
+		$email = $_POST['email'];
+		$res = $serviciosReferencias->insertarSocios($apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email);
+		if ((integer)$res > 0) {
+		echo '';
+		} else {
+		echo 'Huvo un error al insertar datos';
+		}
+	}
+
+
+	function modificarSocios($serviciosReferencias) {
+		$id = $_POST['id'];
+		$apellido = $_POST['apellido'];
+		$nombre = $_POST['nombre'];
+		$nrodocumento = $_POST['nrodocumento'];
+		$cuit = $_POST['cuit'];
+		$domicilio = $_POST['domicilio'];
+		$telefono = $_POST['telefono'];
+		$direccion = $_POST['direccion'];
+		$email = $_POST['email'];
+		$res = $serviciosReferencias->modificarSocios($id,$apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email);
+		if ($res == true) {
+		echo '';
+		} else {
+		echo 'Huvo un error al modificar datos';
+		}
+	}
+
+
+	function eliminarSocios($serviciosReferencias) {
+		$id = $_POST['id'];
+		$res = $serviciosReferencias->eliminarSocios($id);
+		echo $res;
+	} 
+
+
+	function insertarTurnos($serviciosReferencias) {
+		$fechaingreso = $_POST['fechaingreso'];
+		$refclientes = $_POST['refclientes'];
+		$refvehiculos = $_POST['refvehiculos'];
+		$horaentrada = $_POST['horaentrada'];
+		$horasalida = $_POST['horasalida'];
+		$usuacrea = $_POST['usuacrea'];
+		$refestados = $_POST['refestados'];
+		$descuento = $_POST['descuento'];
+		$reftipomovimientos = $_POST['reftipomovimientos'];
+		$res = $serviciosReferencias->insertarTurnos($fechaingreso,$refclientes,$refvehiculos,$horaentrada,$horasalida,$usuacrea,$refestados,$descuento,$reftipomovimientos);
+		if ((integer)$res > 0) {
+		echo '';
+		} else {
+		echo 'Huvo un error al insertar datos';
+		}
+	}
+
+
+	function modificarTurnos($serviciosReferencias) {
+		$id = $_POST['id'];
+		$fechaingreso = $_POST['fechaingreso'];
+		$refclientes = $_POST['refclientes'];
+		$refvehiculos = $_POST['refvehiculos'];
+		$horaentrada = $_POST['horaentrada'];
+		$horasalida = $_POST['horasalida'];
+		$usuacrea = $_POST['usuacrea'];
+		$refestados = $_POST['refestados'];
+		$descuento = $_POST['descuento'];
+		$reftipomovimientos = $_POST['reftipomovimientos'];
+		$res = $serviciosReferencias->modificarTurnos($id,$fechaingreso,$refclientes,$refvehiculos,$horaentrada,$horasalida,$usuacrea,$refestados,$descuento,$reftipomovimientos);
+		if ($res == true) {
+		echo '';
+		} else {
+		echo 'Huvo un error al modificar datos';
+		}
+	}
+
+
+	function eliminarTurnos($serviciosReferencias) {
+		$id = $_POST['id'];
+		$res = $serviciosReferencias->eliminarTurnos($id);
+		echo $res;
+	}
+
+	function insertarTurnosdetalles($serviciosReferencias) {
+		$refturnos = $_POST['refturnos'];
+		$refservicios = $_POST['refservicios'];
+		$descripcion = $_POST['descripcion'];
+		$costo = $_POST['costo'];
+		$tiempo = $_POST['tiempo'];
+		$res = $serviciosReferencias->insertarTurnosdetalles($refturnos,$refservicios,$descripcion,$costo,$tiempo);
+		if ((integer)$res > 0) {
+		echo '';
+		} else {
+		echo 'Huvo un error al insertar datos';
+		}
+	}
+
+
+	function modificarTurnosdetalles($serviciosReferencias) {
+		$id = $_POST['id'];
+		$refturnos = $_POST['refturnos'];
+		$refservicios = $_POST['refservicios'];
+		$descripcion = $_POST['descripcion'];
+		$costo = $_POST['costo'];
+		$tiempo = $_POST['tiempo'];
+		$res = $serviciosReferencias->modificarTurnosdetalles($id,$refturnos,$refservicios,$descripcion,$costo,$tiempo);
+		if ($res == true) {
+		echo '';
+		} else {
+		echo 'Huvo un error al modificar datos';
+		}
+	}
+
+
+	function eliminarTurnosdetalles($serviciosReferencias) {
+		$id = $_POST['id'];
+		$res = $serviciosReferencias->eliminarTurnosdetalles($id);
+		echo $res;
+	}
+
+
+	function insertarServicios($serviciosReferencias) {
+		$descripcion = $_POST['descripcion'];
+		$costo = $_POST['costo'];
+		$tiempo = $_POST['tiempo'];
+		$observaciones = $_POST['observaciones'];
+		$res = $serviciosReferencias->insertarServicios($descripcion,$costo,$tiempo,$observaciones);
+		if ((integer)$res > 0) {
+		echo '';
+		} else {
+		echo 'Huvo un error al insertar datos';
+		}
+	}
+
+
+	function modificarServicios($serviciosReferencias) {
+		$id = $_POST['id'];
+		$descripcion = $_POST['descripcion'];
+		$costo = $_POST['costo'];
+		$tiempo = $_POST['tiempo'];
+		$observaciones = $_POST['observaciones'];
+		$res = $serviciosReferencias->modificarServicios($id,$descripcion,$costo,$tiempo,$observaciones);
+		if ($res == true) {
+		echo '';
+		} else {
+		echo 'Huvo un error al modificar datos';
+		}
+	}
+
+
+	function eliminarServicios($serviciosReferencias) {
+		$id = $_POST['id'];
+		$res = $serviciosReferencias->eliminarServicios($id);
+		echo $res;
+		}
+		function insertarTipomovimientos($serviciosReferencias) {
+		$descripcion = $_POST['descripcion'];
+		$categoria = $_POST['categoria'];
+		$res = $serviciosReferencias->insertarTipomovimientos($descripcion,$categoria);
+		if ((integer)$res > 0) {
+		echo '';
+		} else {
+		echo 'Huvo un error al insertar datos';
+		}
+	}
+
+
+	function modificarTipomovimientos($serviciosReferencias) {
+		$id = $_POST['id'];
+		$descripcion = $_POST['descripcion'];
+		$categoria = $_POST['categoria'];
+		$res = $serviciosReferencias->modificarTipomovimientos($id,$descripcion,$categoria);
+		if ($res == true) {
+		echo '';
+		} else {
+		echo 'Huvo un error al modificar datos';
+		}
+	}
+
+
+	function eliminarTipomovimientos($serviciosReferencias) {
+		$id = $_POST['id'];
+		$res = $serviciosReferencias->eliminarTipomovimientos($id);
+		echo $res;
+	} 
+
 
 /* PARA Tipovehiculo */
 
@@ -373,18 +665,19 @@ function finalizarOrden($serviciosReferencias) {
 
 
 function insertarUsuarios($serviciosReferencias) {
-$usuario = $_POST['usuario'];
-$password = $_POST['password'];
-$refroles = $_POST['refroles'];
-$email = $_POST['email'];
-$nombrecompleto = $_POST['nombrecompleto'];
-$res = $serviciosReferencias->insertarUsuarios($usuario,$password,$refroles,$email,$nombrecompleto);
-if ((integer)$res > 0) {
-echo '';
-} else {
-echo 'hubo un error al insertar datos';
+	$usuario = $_POST['usuario'];
+	$password = $_POST['password'];
+	$refroles = $_POST['refroles'];
+	$email = $_POST['email'];
+	$nombrecompleto = $_POST['nombrecompleto'];
+	$res = $serviciosReferencias->insertarUsuarios($usuario,$password,$refroles,$email,$nombrecompleto);
+	if ((integer)$res > 0) {
+	echo '';
+	} else {
+	echo 'hubo un error al insertar datos';
+	}
 }
-}
+
 function modificarUsuarios($serviciosReferencias) {
 $id = $_POST['id'];
 $usuario = $_POST['usuario'];
@@ -412,6 +705,7 @@ function insertarVehiculos($serviciosReferencias) {
 	$reftipovehiculo 	= $_POST['reftipovehiculo'];
 	$anio 				= $_POST['anio'];
 	$refclientes		= $_POST['refclientes'];
+	$observaciones		= $_POST['observaciones'];
 	
 	if 	($serviciosReferencias->existePatente($patente) == true) {
 		echo 'La patente ya fue cargada, no pueden existir dos patentes iguales.';
@@ -420,7 +714,7 @@ function insertarVehiculos($serviciosReferencias) {
 		if (($refclientes == '') || ($refclientes == null)) {
 			echo 'Debe seleccionar un cliente para poder ingresar un vehiculo';
 		} else {
-			$res = $serviciosReferencias->insertarVehiculos($patente,$refmodelo,$reftipovehiculo,$anio);
+			$res = $serviciosReferencias->insertarVehiculos($patente,$refmodelo,$reftipovehiculo,$anio,$observaciones);
 		
 			if ((integer)$res > 0) {
 				
@@ -440,19 +734,24 @@ function insertarVehiculos($serviciosReferencias) {
 	
 	
 }
-function modificarVehiculos($serviciosReferencias) {
-$id = $_POST['id'];
-$patente = $_POST['patente'];
-$refmodelo = $_POST['refmodelo'];
-$reftipovehiculo = $_POST['reftipovehiculo'];
-$anio = $_POST['anio'];
-$res = $serviciosReferencias->modificarVehiculos($id,$patente,$refmodelo,$reftipovehiculo,$anio);
-if ($res == true) {
-echo '';
-} else {
-echo 'hubo un error al modificar datos';
-}
-}
+
+	function modificarVehiculos($serviciosReferencias) {
+		$id = $_POST['id'];
+		$patente = $_POST['patente'];
+		$refmodelo = $_POST['refmodelo'];
+		$reftipovehiculo = $_POST['reftipovehiculo'];
+		$anio = $_POST['anio'];
+		$observaciones		= $_POST['observaciones'];
+
+		$res = $serviciosReferencias->modificarVehiculos($id,$patente,$refmodelo,$reftipovehiculo,$anio,$observaciones);
+		
+		if ($res == true) {
+			echo '';
+		} else {
+			echo 'hubo un error al modificar datos';
+		}
+	}
+
 function eliminarVehiculos($serviciosReferencias) {
 $id = $_POST['id'];
 $res = $serviciosReferencias->eliminarVehiculos($id);
