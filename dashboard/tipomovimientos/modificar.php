@@ -22,34 +22,34 @@ $serviciosReferencias 	= new ServiciosReferencias();
 $fecha = date('Y-m-d');
 
 //$resProductos = $serviciosProductos->traerProductosLimite(6);
-$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Socios",$_SESSION['refroll_predio'],'');
+$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Tipo Movimientos",$_SESSION['refroll_predio'],'');
 
 
 $id = $_GET['id'];
 
-$resResultado = $serviciosReferencias->traerSociosPorId($id);
+$resResultado = $serviciosReferencias->traerTipomovimientosPorId($id);
 
 
 /////////////////////// Opciones pagina ///////////////////////////////////////////////
-$singular = "Socio";
+$singular = "Tipo Movimiento";
 
-$plural = "Socios";
+$plural = "Tipo Movimientos";
 
-$eliminar = "eliminarSocios";
+$eliminar = "eliminarTipomovimientos";
 
-$modificar = "modificarSocios";
+$modificar = "modificarTipomovimientos";
 
-$idTabla = "idsocio";
+$idTabla = "idtipomovimiento";
 
 $tituloWeb = "Gestión: Bellwash";
 //////////////////////// Fin opciones ////////////////////////////////////////////////
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "dbsocios";
+$tabla 			= "tbtipomovimientos";
 
-$lblCambio	 	= array('nrodocumento');
-$lblreemplazo	= array('Nro Documento');
+$lblCambio	 	= array();
+$lblreemplazo	= array();
 
 
 $cadRef 	= '';

@@ -78,6 +78,9 @@ break;
 case 'insertarVehiculos':
 insertarVehiculos($serviciosReferencias);
 break;
+case 'insertarVehiculosSimple':
+insertarVehiculosSimple($serviciosReferencias);
+break;
 case 'modificarVehiculos':
 modificarVehiculos($serviciosReferencias);
 break;
@@ -217,9 +220,221 @@ break;
 case 'eliminarTipomovimientos':
 eliminarTipomovimientos($serviciosReferencias);
 break; 
+
+case 'insertarOtrosingresosegresos': 
+insertarOtrosingresosegresos($serviciosReferencias); 
+break; 
+case 'modificarOtrosingresosegresos': 
+modificarOtrosingresosegresos($serviciosReferencias); 
+break; 
+case 'eliminarOtrosingresosegresos': 
+eliminarOtrosingresosegresos($serviciosReferencias); 
+break; 
+
+case 'insertarCaja': 
+insertarCaja($serviciosReferencias); 
+break; 
+case 'modificarCaja': 
+modificarCaja($serviciosReferencias); 
+break; 
+case 'eliminarCaja': 
+eliminarCaja($serviciosReferencias); 
+break; 
+
+case 'insertarTurnos': 
+insertarTurnos($serviciosReferencias); 
+break; 
+case 'modificarTurnos': 
+modificarTurnos($serviciosReferencias); 
+break; 
+case 'eliminarTurnos': 
+eliminarTurnos($serviciosReferencias); 
+break; 
+case 'insertarTurnosdetalles': 
+insertarTurnosdetalles($serviciosReferencias); 
+break; 
+case 'modificarTurnosdetalles': 
+modificarTurnosdetalles($serviciosReferencias); 
+break; 
+case 'eliminarTurnosdetalles': 
+eliminarTurnosdetalles($serviciosReferencias); 
+break; 
+
+case 'traerCajadiariaPorFecha':
+traerCajadiariaPorFecha($serviciosReferencias);
+break;
+case 'insertarCajadiaria':
+insertarCajadiaria($serviciosReferencias);
+break;
+
+case 'insertarClientesV':
+insertarClientesV($serviciosReferencias);
+break;
+
+case 'traerVehiculosPorCliente':
+traerVehiculosPorCliente($serviciosReferencias, $serviciosFunciones);
+break;
+
+}
+/* Fin */
+
+function traerVehiculosPorCliente($serviciosReferencias, $serviciosFunciones) {
+	$idcliente = $_POST['id'];
+
+	$res = $serviciosReferencias->traerVehiculosPorClientes($idcliente);
+	$cad = $serviciosFunciones->devolverSelectBox($res,array(1,3,4),' ');
+
+	echo $cad;
 }
 
-/* Fin */
+
+function insertarClientesV($serviciosReferencias) {
+	$apellido = $_POST['apellido'];
+	$nombre = $_POST['nombre'];
+	$nrodocumento = $_POST['nrodocumento'];
+	$fechanacimiento = $_POST['fechanacimiento'];
+	$direccion = $_POST['direccion'];
+	$telefono = $_POST['telefono'];
+	$email = $_POST['email'];
+	
+	$res = $serviciosReferencias->insertarClientes($apellido,$nombre,$nrodocumento,$fechanacimiento,$direccion,$telefono,$email);
+	
+	if ((integer)$res > 0) {
+		$patente 			= str_replace(' ','',ltrim(rtrim($_POST['patente'])));
+		$refmodelo 			= $_POST['refmodelo'];
+		$reftipovehiculo 	= $_POST['reftipovehiculo'];
+		$anio 				= $_POST['anio'];
+		$refclientes		= $res;
+		$observaciones		= $_POST['observaciones'];
+		
+		if 	($serviciosReferencias->existePatente($patente) == true) {
+			echo 'La patente ya fue cargada, no pueden existir dos patentes iguales.';
+		} else {
+		
+			if (($refclientes == '') || ($refclientes == null)) {
+				echo 'Debe seleccionar un cliente para poder ingresar un vehiculo';
+			} else {
+				$res = $serviciosReferencias->insertarVehiculos($patente,$refmodelo,$reftipovehiculo,$anio,$observaciones);
+			
+				if ((integer)$res > 0) {
+					
+					$res2 = $serviciosReferencias->insertarClientevehiculos($refclientes,$res,'1');
+					if ((integer)$res2 > 0) {
+						echo '';	
+					} else {
+						$serviciosReferencias->eliminarVehiculos($res);
+						echo 'hubo un error al insertar datos del dueño';	
+					}
+					
+				} else {
+					echo 'hubo un error al insertar datos';
+				}
+			}
+		}
+		echo '';
+	} else {
+		echo 'hubo un error al insertar datos';
+	}
+}
+
+function traerCajadiariaPorFecha($serviciosReferencias) {
+	$fecha = $_POST['fecha'];	
+	
+	$res = $serviciosReferencias->traerCajadiariaPorFecha($fecha);
+	
+	if (mysql_num_rows($res)>0) {
+		echo mysql_result($res,0,'montoinicio');	
+	} else {
+		echo 0;
+	}
+}
+
+function insertarCajadiaria($serviciosReferencias) {
+	$monto = $_POST['inicio']; 
+	$montoinicio = $_POST['inicio']; 
+	$montofinal = $_POST['inicio']; 
+	$fecha = $_POST['fecha']; 
+	
+	$res = $serviciosReferencias->insertarCaja($monto,$montoinicio,$montofinal,$fecha); 
+	
+	if ((integer)$res > 0) { 
+		echo ''; 
+	} else { 
+		echo 'Huvo un error al insertar datos';	 
+	} 
+}
+
+function insertarCaja($serviciosReferencias) { 
+	$monto = $_POST['monto']; 
+	$montoinicio = $_POST['montoinicio']; 
+	$montofinal = $_POST['montofinal']; 
+	$fecha = $_POST['fecha']; 
+	$res = $serviciosReferencias->insertarCaja($monto,$montoinicio,$montofinal,$fecha); 
+	if ((integer)$res > 0) { 
+	echo ''; 
+	} else { 
+	echo 'Huvo un error al insertar datos';	 
+	} 
+} 
+
+
+	function modificarCaja($serviciosReferencias) { 
+	$id = $_POST['id']; 
+	$monto = $_POST['monto']; 
+	$montoinicio = $_POST['montoinicio']; 
+	$montofinal = $_POST['montofinal']; 
+	$fecha = $_POST['fecha']; 
+	$res = $serviciosReferencias->modificarCaja($id,$monto,$montoinicio,$montofinal,$fecha); 
+	if ($res == true) { 
+	echo ''; 
+	} else { 
+	echo 'Huvo un error al modificar datos'; 
+	} 
+	} 
+
+	function eliminarCaja($serviciosReferencias) { 
+	$id = $_POST['id']; 
+	$res = $serviciosReferencias->eliminarCaja($id); 
+	echo $res; 
+	} 
+
+
+	function insertarOtrosingresosegresos($serviciosReferencias) { 
+	$reftipomovimientos = $_POST['reftipomovimientos']; 
+	$monto = $_POST['monto']; 
+
+	$usuacrea = $_POST['usuacrea']; 
+	$res = $serviciosReferencias->insertarOtrosingresosegresos($reftipomovimientos,$monto,$usuacrea); 
+	if ((integer)$res > 0) { 
+	echo ''; 
+	} else { 
+	echo 'Huvo un error al insertar datos';	 
+	} 
+	} 
+
+
+	function modificarOtrosingresosegresos($serviciosReferencias) { 
+	$id = $_POST['id']; 
+	$reftipomovimientos = $_POST['reftipomovimientos']; 
+	$monto = $_POST['monto']; 
+
+	$usuacrea = $_POST['usuacrea']; 
+	$res = $serviciosReferencias->modificarOtrosingresosegresos($id,$reftipomovimientos,$monto,$usuacrea); 
+	if ($res == true) { 
+	echo ''; 
+	} else { 
+	echo 'Huvo un error al modificar datos'; 
+	} 
+	} 
+
+
+	function eliminarOtrosingresosegresos($serviciosReferencias) { 
+	$id = $_POST['id']; 
+	$res = $serviciosReferencias->eliminarOtrosingresosegresos($id); 
+	echo $res; 
+	} 
+
+
 
 
 	function insertarProveedores($serviciosReferencias) {
@@ -231,8 +446,8 @@ break;
 		$telefono = $_POST['telefono'];
 		$celular = $_POST['celular'];
 		$email = $_POST['email'];
-		$observacionces = $_POST['observacionces'];
-		$res = $serviciosReferencias->insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observacionces);
+		$observaciones = $_POST['observaciones'];
+		$res = $serviciosReferencias->insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observaciones);
 		if ((integer)$res > 0) {
 		echo '';
 		} else {
@@ -251,8 +466,8 @@ break;
 		$telefono = $_POST['telefono'];
 		$celular = $_POST['celular'];
 		$email = $_POST['email'];
-		$observacionces = $_POST['observacionces'];
-		$res = $serviciosReferencias->modificarProveedores($id,$razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observacionces);
+		$observaciones = $_POST['observaciones'];
+		$res = $serviciosReferencias->modificarProveedores($id,$razonsocial,$nombre,$apellido,$cuit,$direccion,$telefono,$celular,$email,$observaciones);
 		if ($res == true) {
 		echo '';
 		} else {
@@ -273,9 +488,8 @@ break;
 		$cuit = $_POST['cuit'];
 		$domicilio = $_POST['domicilio'];
 		$telefono = $_POST['telefono'];
-		$direccion = $_POST['direccion'];
 		$email = $_POST['email'];
-		$res = $serviciosReferencias->insertarSocios($apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email);
+		$res = $serviciosReferencias->insertarSocios($apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$email);
 		if ((integer)$res > 0) {
 		echo '';
 		} else {
@@ -292,9 +506,8 @@ break;
 		$cuit = $_POST['cuit'];
 		$domicilio = $_POST['domicilio'];
 		$telefono = $_POST['telefono'];
-		$direccion = $_POST['direccion'];
 		$email = $_POST['email'];
-		$res = $serviciosReferencias->modificarSocios($id,$apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email);
+		$res = $serviciosReferencias->modificarSocios($id,$apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$email);
 		if ($res == true) {
 		echo '';
 		} else {
@@ -320,11 +533,20 @@ break;
 		$refestados = $_POST['refestados'];
 		$descuento = $_POST['descuento'];
 		$reftipomovimientos = $_POST['reftipomovimientos'];
+		
 		$res = $serviciosReferencias->insertarTurnos($fechaingreso,$refclientes,$refvehiculos,$horaentrada,$horasalida,$usuacrea,$refestados,$descuento,$reftipomovimientos);
+		
 		if ((integer)$res > 0) {
-		echo '';
+			$resServicios = $serviciosReferencias->traerServicios();
+
+			while ($rowFS = mysql_fetch_array($resServicios)) {
+				if (isset($_POST[$rowFS[0]])) {
+					$serviciosReferencias->insertarTurnosdetalles($res,$rowFS[0],$rowFS[1],$rowFS[2],$rowFS[3]);
+				}
+			}
+			echo '';
 		} else {
-		echo 'Huvo un error al insertar datos';
+			echo 'Huvo un error al insertar datos';
 		}
 	}
 
@@ -705,6 +927,43 @@ function insertarVehiculos($serviciosReferencias) {
 	$reftipovehiculo 	= $_POST['reftipovehiculo'];
 	$anio 				= $_POST['anio'];
 	$refclientes		= $_POST['refclientes'];
+	$observaciones		= $_POST['observaciones'];
+	
+	if 	($serviciosReferencias->existePatente($patente) == true) {
+		echo 'La patente ya fue cargada, no pueden existir dos patentes iguales.';
+	} else {
+	
+		if (($refclientes == '') || ($refclientes == null)) {
+			echo 'Debe seleccionar un cliente para poder ingresar un vehiculo';
+		} else {
+			$res = $serviciosReferencias->insertarVehiculos($patente,$refmodelo,$reftipovehiculo,$anio,$observaciones);
+		
+			if ((integer)$res > 0) {
+				
+				$res2 = $serviciosReferencias->insertarClientevehiculos($refclientes,$res,'1');
+				if ((integer)$res2 > 0) {
+					echo '';	
+				} else {
+					$serviciosReferencias->eliminarVehiculos($res);
+					echo 'hubo un error al insertar datos del dueño';	
+				}
+				
+			} else {
+				echo 'hubo un error al insertar datos';
+			}
+		}
+	}
+	
+	
+}
+
+
+function insertarVehiculosSimple($serviciosReferencias) {
+	$patente 			= str_replace(' ','',ltrim(rtrim($_POST['patente2'])));
+	$refmodelo 			= $_POST['refmodelo'];
+	$reftipovehiculo 	= $_POST['reftipovehiculo'];
+	$anio 				= $_POST['anio2'];
+	$refclientes		= $_POST['refclientes2'];
 	$observaciones		= $_POST['observaciones'];
 	
 	if 	($serviciosReferencias->existePatente($patente) == true) {

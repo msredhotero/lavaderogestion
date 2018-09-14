@@ -20,20 +20,87 @@ function GUID()
 }
 
 
+/* PARA Caja */
+
+function insertarCaja($monto,$montoinicio,$montofinal,$fecha,$usuacrea) { 
+	$sql = "insert into dbcaja(idcaja,monto,montoinicio,montofinal,usuacrea) 
+	values ('',".$monto.",".$montoinicio.",".$montofinal.",'".$usuacrea."')"; 
+	$res = $this->query($sql,1); 
+	return $res; 
+	} 
+	
+	
+	function modificarCaja($id,$monto,$montoinicio,$montofinal,$fecha,$usuacrea) { 
+	$sql = "update dbcaja 
+	set 
+	monto = ".$monto.",montoinicio = ".$montoinicio.",montofinal = ".$montofinal.",usuacrea = '".$usuacrea."'
+	where idcaja =".$id; 
+	$res = $this->query($sql,0); 
+	return $res; 
+	} 
+	
+	
+	function eliminarCaja($id) { 
+	$sql = "delete from dbcaja where idcaja =".$id; 
+	$res = $this->query($sql,0); 
+	return $res; 
+	} 
+	
+	
+	function traerCaja() { 
+	$sql = "select 
+	c.idcaja,
+	c.monto,
+	c.montoinicio,
+	c.montofinal,
+	c.fecha
+	from dbcaja c 
+	order by 1"; 
+	$res = $this->query($sql,0); 
+	return $res; 
+	} 
+	
+	
+	function traerCajaPorId($id) { 
+	$sql = "select idcaja,monto,montoinicio,montofinal,fecha from dbcaja where idcaja =".$id; 
+	$res = $this->query($sql,0); 
+	return $res; 
+	} 
+
+	function traerCajadiariaPorFecha($fecha) {
+		$sql = "select 
+		c.idcaja,
+		c.monto,
+		c.montoinicio,
+		c.montofinal,
+		c.fecha
+		from dbcaja c 
+		where year(c.fecha) = year('".$fecha."') and month(c.fecha) = month('".$fecha."') 
+				and day(c.fecha) = day('".$fecha."')
+		order by 1 desc 
+		limit 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
+	/* Fin */
+	/* /* Fin de la Tabla: dbcaja*/
+	
+
 /* PARA Otrosingresosegresos */
 
-function insertarOtrosingresosegresos($reftipomovimientos,$monto,$fechacrea,$usuacrea) {
-	$sql = "insert into dbotrosingresosegresos(idotrosingresosegresos,reftipomovimientos,monto,fechacrea,usuacrea)
-	values ('',".$reftipomovimientos.",".$monto.",'".($fechacrea)."','".($usuacrea)."')";
+function insertarOtrosingresosegresos($reftipomovimientos,$monto,$usuacrea) {
+	$sql = "insert into dbotrosingresosegresos(idotrosingresosegresos,reftipomovimientos,monto,usuacrea)
+	values ('',".$reftipomovimientos.",".$monto.",'".($usuacrea)."')";
 	$res = $this->query($sql,1);
 	return $res;
 	}
 	
 	
-	function modificarOtrosingresosegresos($id,$reftipomovimientos,$monto,$fechacrea,$usuacrea) {
+	function modificarOtrosingresosegresos($id,$reftipomovimientos,$monto,$usuacrea) {
 	$sql = "update dbotrosingresosegresos
 	set
-	reftipomovimientos = ".$reftipomovimientos.",monto = ".$monto.",fechacrea = '".($fechacrea)."',usuacrea = '".($usuacrea)."'
+	reftipomovimientos = ".$reftipomovimientos.",monto = ".$monto.",usuacrea = '".($usuacrea)."'
 	where idotrosingresosegresos =".$id;
 	$res = $this->query($sql,0);
 	return $res;
@@ -61,6 +128,21 @@ function insertarOtrosingresosegresos($reftipomovimientos,$monto,$fechacrea,$usu
 	return $res;
 	}
 	
+
+	function traerOtrosingresosegresosGrid() {
+		$sql = "select
+		o.idotrosingresosegresos,
+		tip.descripcion as tipomovimiento,
+		o.monto,
+		o.fechacrea,
+		o.usuacrea,
+		o.reftipomovimientos
+		from dbotrosingresosegresos o
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = o.reftipomovimientos
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
 	
 	function traerOtrosingresosegresosPorId($id) {
 	$sql = "select idotrosingresosegresos,reftipomovimientos,monto,fechacrea,usuacrea from dbotrosingresosegresos where idotrosingresosegresos =".$id;
@@ -130,18 +212,18 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	
 	/* PARA Socios */
 	
-	function insertarSocios($apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email) {
-	$sql = "insert into dbsocios(idsocio,apellido,nombre,nrodocumento,cuit,domicilio,telefono,direccion,email)
-	values ('','".($apellido)."','".($nombre)."','".($nrodocumento)."','".($cuit)."','".($domicilio)."','".($telefono)."','".($direccion)."','".($email)."')";
+	function insertarSocios($apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$email) {
+	$sql = "insert into dbsocios(idsocio,apellido,nombre,nrodocumento,cuit,domicilio,telefono,email)
+	values ('','".($apellido)."','".($nombre)."','".($nrodocumento)."','".($cuit)."','".($domicilio)."','".($telefono)."','".($email)."')";
 	$res = $this->query($sql,1);
 	return $res;
 	}
 	
 	
-	function modificarSocios($id,$apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$direccion,$email) {
+	function modificarSocios($id,$apellido,$nombre,$nrodocumento,$cuit,$domicilio,$telefono,$email) {
 	$sql = "update dbsocios
 	set
-	apellido = '".($apellido)."',nombre = '".($nombre)."',nrodocumento = '".($nrodocumento)."',cuit = '".($cuit)."',domicilio = '".($domicilio)."',telefono = '".($telefono)."',direccion = '".($direccion)."',email = '".($email)."'
+	apellido = '".($apellido)."',nombre = '".($nombre)."',nrodocumento = '".($nrodocumento)."',cuit = '".($cuit)."',domicilio = '".($domicilio)."',telefono = '".($telefono)."',email = '".($email)."'
 	where idsocio =".$id;
 	$res = $this->query($sql,0);
 	return $res;
@@ -164,7 +246,6 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	s.cuit,
 	s.domicilio,
 	s.telefono,
-	s.direccion,
 	s.email
 	from dbsocios s
 	order by 1";
@@ -174,7 +255,7 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	
 	
 	function traerSociosPorId($id) {
-	$sql = "select idsocio,apellido,nombre,nrodocumento,cuit,domicilio,telefono,direccion,email from dbsocios where idsocio =".$id;
+	$sql = "select idsocio,apellido,nombre,nrodocumento,cuit,domicilio,telefono,email from dbsocios where idsocio =".$id;
 	$res = $this->query($sql,0);
 	return $res;
 	}
@@ -232,6 +313,64 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	order by 1";
 	$res = $this->query($sql,0);
 	return $res;
+	}
+
+	function traerTurnosGrid() {
+		$sql = "select
+			t.idturno,
+			t.fechaingreso,
+			concat(cli.apellido, ' ', cli.nombre) as apyn,
+			concat(veh.patente, ' ', mo.modelo, ' ', ma.marca) as vehiculo,
+			t.horaentrada,
+			t.horasalida,
+			t.usuacrea,
+			est.estado,
+			t.descuento,
+			t.refestados,
+			t.refclientes,
+			t.refvehiculos,
+			t.reftipomovimientos
+		from dbturnos t
+		inner join dbclientes cli ON cli.idcliente = t.refclientes
+		inner join dbvehiculos veh ON veh.idvehiculo = t.refvehiculos
+		inner join tbmodelo mo ON mo.idmodelo = veh.refmodelo
+		inner join tbmarca ma ON ma.idmarca = mo.refmarca
+		inner join tbtipovehiculo ti ON ti.idtipovehiculo = veh.reftipovehiculo
+		inner join tbestados est ON est.idestado = t.refestados
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+
+
+	function traerTurnosGridPorFecha($fecha) {
+		$sql = "select
+			t.idturno,
+			t.fechaingreso,
+			concat(cli.apellido, ' ', cli.nombre) as apyn,
+			concat(veh.patente, ' ', mo.modelo, ' ', ma.marca) as vehiculo,
+			t.horaentrada,
+			t.horasalida,
+			t.usuacrea,
+			est.estado,
+			t.descuento,
+			t.refestados,
+			t.refclientes,
+			t.refvehiculos,
+			t.reftipomovimientos
+		from dbturnos t
+		inner join dbclientes cli ON cli.idcliente = t.refclientes
+		inner join dbvehiculos veh ON veh.idvehiculo = t.refvehiculos
+		inner join tbmodelo mo ON mo.idmodelo = veh.refmodelo
+		inner join tbmarca ma ON ma.idmarca = mo.refmarca
+		inner join tbtipovehiculo ti ON ti.idtipovehiculo = veh.reftipovehiculo
+		inner join tbestados est ON est.idestado = t.refestados
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
+		where year(t.fechaingreso) = year('".$fecha."') and month(t.fechaingreso) = month('".$fecha."') and day(t.fechaingreso) = day('".$fecha."')
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
 	}
 	
 	
@@ -802,6 +941,28 @@ $res = $this->query($sql,0);
 return $res;
 }
 
+function traerVehiculosPorClientes($idclientes) {
+	$sql = "select
+	v.idvehiculo,
+	v.patente,
+	concat(cc.apellido,' ',cc.nombre) as titular,
+	ma.marca,
+	mo.modelo,
+	tip.tipovehiculo,
+	v.anio,
+	v.observaciones
+	from dbvehiculos v
+	inner join tbmodelo mo ON mo.idmodelo = v.refmodelo
+	inner join tbmarca ma ON ma.idmarca = mo.refmarca
+	inner join tbtipovehiculo tip ON tip.idtipovehiculo = v.reftipovehiculo
+	inner join dbclientevehiculos cv on cv.refvehiculos = v.idvehiculo
+	inner join dbclientes cc on cv.refclientes = cc.idcliente
+	where cc.idcliente = ".$idclientes."
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+	}
+
 
 function traerVehiculosPorId($id) {
 $sql = "select idvehiculo,patente,refmodelo,reftipovehiculo,anio,observaciones from dbvehiculos where idvehiculo =".$id;
@@ -910,6 +1071,17 @@ order by 1";
 $res = $this->query($sql,0);
 return $res;
 }
+
+function traerEstadosPorIn($in) {
+	$sql = "select
+	e.idestado,
+	e.estado
+	from tbestados e
+	where e.idestado in (".$in.")
+	order by 2";
+	$res = $this->query($sql,0);
+	return $res;
+	}
 
 
 function traerEstadosPorId($id) {

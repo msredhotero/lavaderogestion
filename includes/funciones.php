@@ -393,7 +393,7 @@ class Servicios {
 									$label = ucwords($label);
 									$campo = strtolower($row[0]);
 									
-									if ($row[0] == "fechapago") {
+									if (($row[0] == "fechaingreso") || ($row[0] == "horaentrada") || ($row[0] == "horasalida") || ($row[0] == "fechanacimiento")){
 										$form	=	$form.'
 														
 										<div class="form-group col-md-6">

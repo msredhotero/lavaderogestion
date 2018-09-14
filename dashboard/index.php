@@ -159,6 +159,40 @@ $lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosRe
 </div>
 
 
+
+<div class="modal fade" id="myModalcaja" tabindex="1" style="z-index:500000;" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inicio de Caja</h4>
+      </div>
+      <div class="modal-body inicioCaja">
+      	<div class="row">
+        <div class="form-group col-md-6 col-xs-6" style="display:'.$lblOculta.'">
+            <label for="'.$campo.'" class="control-label" style="text-align:left">Fecha</label>
+            <div class="input-group date form_date col-md-6 col-xs-6" data-date="" data-date-format="dd MM yyyy" data-link-field="fechacaja" data-link-format="yyyy-mm-dd">
+                <input class="form-control" size="50" type="text" value="<?php echo date('Y-m-d'); ?>" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+            <input type="hidden" name="fechacaja" id="fechacaja" value="<?php echo date('Y-m-d'); ?>" />
+        </div>
+        <div class="col-md-6">
+        	<label class="control-label">Ingresa Inicio de Caja</label>
+            <div class="col-md-12 input-group">
+            	<input type="number" class="form-control valor" id="cajainicio" name="cajainicio" value="5" required />
+            </div>
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" data-dismiss="modal" id="guardarcaja">Guardar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -219,6 +253,42 @@ $(document).ready(function(){
 			}
 		  }
 	} );
+
+
+	$('#guardarcaja').click(function() {
+
+		$.ajax({
+			data:  {fecha: $('#fechacaja').val(),
+					inicio: $('.valor').val(), 
+					accion: 'insertarCajadiaria'},
+			url:   '../ajax/ajax.php',
+			type:  'post',
+			beforeSend: function () {
+					
+			},
+			success:  function (response) {
+				$('.detallePedido').html(response);	
+				traerCaja();
+			}
+		});
+});
+
+function traerCaja() {
+$.ajax({
+	data:  {fecha: $('#fechacaja').val(),
+			accion: 'traerCajadiariaPorFecha'},
+	url:   '../ajax/ajax.php',
+	type:  'post',
+	beforeSend: function () {
+			
+	},
+	success:  function (response) {
+		$('.valor').val(response);
+	}
+});
+}
+
+traerCaja();
 	
 
 	$('table.table').on("click",'.varborrar', function(){

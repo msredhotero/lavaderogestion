@@ -22,34 +22,34 @@ $serviciosReferencias 	= new ServiciosReferencias();
 $fecha = date('Y-m-d');
 
 //$resProductos = $serviciosProductos->traerProductosLimite(6);
-$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Socios",$_SESSION['refroll_predio'],'');
+$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Servicios",$_SESSION['refroll_predio'],'');
 
 
 $id = $_GET['id'];
 
-$resResultado = $serviciosReferencias->traerSociosPorId($id);
+$resResultado = $serviciosReferencias->traerServiciosPorId($id);
 
 
 /////////////////////// Opciones pagina ///////////////////////////////////////////////
-$singular = "Socio";
+$singular = "Servicio";
 
-$plural = "Socios";
+$plural = "Servicios";
 
-$eliminar = "eliminarSocios";
+$eliminar = "eliminarServicios";
 
-$modificar = "modificarSocios";
+$modificar = "modificarServicios";
 
-$idTabla = "idsocio";
+$idTabla = "idservicio";
 
 $tituloWeb = "Gestión: Bellwash";
 //////////////////////// Fin opciones ////////////////////////////////////////////////
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "dbsocios";
+$tabla 			= "tbservicios";
 
-$lblCambio	 	= array('nrodocumento');
-$lblreemplazo	= array('Nro Documento');
+$lblCambio	 	= array();
+$lblreemplazo	= array();
 
 
 $cadRef 	= '';

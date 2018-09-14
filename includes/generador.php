@@ -55,6 +55,7 @@ $tablasAr	= array("clientes"        => "dbclientes",
 "tipomovimientos"	=>	"tbtipomovimientos",
 "socios"	=>	"dbsocios",
 "proveedores"	=>	"dbproveedores",
+"caja"	=>	"dbcaja",
 "pagos"			  => "dbpagos");
 
 
@@ -80,6 +81,7 @@ function recursiveTablas($ar, $tabla, $aliasTablaMadre) {
 	"tipomovimientos"	=>	"tbtipomovimientos",
 	"socios"	=>	"dbsocios",
 	"proveedores"	=>	"dbproveedores",
+	"caja"	=>	"dbcaja",
 	"pagos"			  => "dbpagos");
 
 	$tablasArAux	= array("clientes"        => 1,        
@@ -102,6 +104,7 @@ function recursiveTablas($ar, $tabla, $aliasTablaMadre) {
 	"tipomovimientos"	=>	1,
 	"socios"	=>	1,
 	"proveedores"	=>	1,
+	"caja"	=>	1,
 	"pagos"			  => 1);
 	
 	$inner= '';
