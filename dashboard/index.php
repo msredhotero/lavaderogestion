@@ -39,19 +39,18 @@ $tituloWeb = "Gestión: Talleres";
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
 
 /////////////////////// Opciones para la creacion del view  patente,refmodelo,reftipovehiculo,anio/////////////////////
-$cabeceras 		= "	<th>Nro</th>
+$cabeceras 		= "	<th>Ingreso</th>
 					<th>Dueño</th>
 					<th>Vehiculo</th>
-					<th>Fecha</th>
-					<th>Reparación</th>
-					<th>Presup. Aprox.</th>
-					<th>Saldo</th>
+					<th>Hora Entrada</th>
+					<th>Hora Salida</th>
+					<th>Usuario</th>
 					<th>Estado</th>";
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerOrdenesActivos(),95);
-$lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerOrdenesMora(),94);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('3,4,5'),7);
+$lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('1'),7);
 
 ?>
 
@@ -66,7 +65,7 @@ $lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosRe
 
 
 
-<title>Gesti&oacute;n: Taller Mecanico</title>
+<title>Gesti&oacute;n: Bellwash</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
@@ -113,7 +112,7 @@ $lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosRe
 
     <div class="boxInfoLargo tile-stats tile-white stat-tile">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Ordenes Cargadas</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Turnos Cargados</p>
         	
         </div>
     	<div class="cuerpoBox">
@@ -132,7 +131,7 @@ $lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosRe
     
     <div class="boxInfoLargo tile-stats tile-white stat-tile">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Mora</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Finalizados</p>
         	
         </div>
     	<div class="cuerpoBox">

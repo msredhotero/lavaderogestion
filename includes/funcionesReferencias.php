@@ -143,6 +143,45 @@ function insertarOtrosingresosegresos($reftipomovimientos,$monto,$usuacrea) {
 		$res = $this->query($sql,0);
 		return $res;
 	}
+
+
+	function traerOtrosingresosegresosTotalPorFecha($fecha) {
+		$sql = "select
+					(case when tip.categoria = 2 then sum(o.monto) else 0 end) as ingresos,
+					(case when tip.categoria > 2 then sum(o.monto) else 0 end) as egresos
+		from dbotrosingresosegresos o
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = o.reftipomovimientos
+		where year(o.fechacrea) = year('".$fecha."') 
+				and month(o.fechacrea) = month('".$fecha."') 
+				and day(o.fechacrea) = day('".$fecha."')
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+
+
+	function traerOtrosingresosegresosTotalPorAnio($anio) {
+		$sql = "select
+					(case when tip.categoria = 2 then sum(o.monto) else 0 end) as ingresos,
+					(case when tip.categoria > 2 then sum(o.monto) else 0 end) as egresos
+		from dbotrosingresosegresos o
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = o.reftipomovimientos
+		where year(o.fechacrea) = ".$anio;
+		$res = $this->query($sql,0);
+		return $res;
+	}
+
+
+	function traerOtrosingresosegresosTotalPorDesdeHasta($desde, $hasta) {
+		$sql = "select
+					(case when tip.categoria = 2 then sum(o.monto) else 0 end) as ingresos,
+					(case when tip.categoria > 2 then sum(o.monto) else 0 end) as egresos
+		from dbotrosingresosegresos o
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = o.reftipomovimientos
+		where o.fechacrea between '".$desde."' and '".$hasta."' ";
+		$res = $this->query($sql,0);
+		return $res;
+	}
 	
 	function traerOtrosingresosegresosPorId($id) {
 	$sql = "select idotrosingresosegresos,reftipomovimientos,monto,fechacrea,usuacrea from dbotrosingresosegresos where idotrosingresosegresos =".$id;
@@ -343,6 +382,35 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 		return $res;
 	}
 
+	function traerTurnosGridPorEstadoIn($in) {
+		$sql = "select
+			t.idturno,
+			t.fechaingreso,
+			concat(cli.apellido, ' ', cli.nombre) as apyn,
+			concat(veh.patente, ' ', mo.modelo, ' ', ma.marca) as vehiculo,
+			t.horaentrada,
+			t.horasalida,
+			t.usuacrea,
+			est.estado,
+			t.descuento,
+			t.refestados,
+			t.refclientes,
+			t.refvehiculos,
+			t.reftipomovimientos
+		from dbturnos t
+		inner join dbclientes cli ON cli.idcliente = t.refclientes
+		inner join dbvehiculos veh ON veh.idvehiculo = t.refvehiculos
+		inner join tbmodelo mo ON mo.idmodelo = veh.refmodelo
+		inner join tbmarca ma ON ma.idmarca = mo.refmarca
+		inner join tbtipovehiculo ti ON ti.idtipovehiculo = veh.reftipovehiculo
+		inner join tbestados est ON est.idestado = t.refestados
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
+		where est.idestado in (".$in.")
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+
 
 	function traerTurnosGridPorFecha($fecha) {
 		$sql = "select
@@ -368,6 +436,74 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 		inner join tbestados est ON est.idestado = t.refestados
 		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
 		where year(t.fechaingreso) = year('".$fecha."') and month(t.fechaingreso) = month('".$fecha."') and day(t.fechaingreso) = day('".$fecha."')
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+
+
+	function traerTurnosTotalPorFechaEstados($fecha, $estados) {
+		$sql = "select
+			sum(td.costo) as subtotal,
+			sum(descuento) as descuento,
+			sum(td.costo) + sum(descuento) as total
+		from dbturnos t
+		inner join dbturnosdetalles td on t.idturno = td.refturnos
+		inner join dbclientes cli ON cli.idcliente = t.refclientes
+		inner join dbvehiculos veh ON veh.idvehiculo = t.refvehiculos
+		inner join tbmodelo mo ON mo.idmodelo = veh.refmodelo
+		inner join tbmarca ma ON ma.idmarca = mo.refmarca
+		inner join tbtipovehiculo ti ON ti.idtipovehiculo = veh.reftipovehiculo
+		inner join tbestados est ON est.idestado = t.refestados
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
+		where year(t.fechaingreso) = year('".$fecha."') 
+				and month(t.fechaingreso) = month('".$fecha."') 
+				and day(t.fechaingreso) = day('".$fecha."')
+				and est.idestado in (".$estados.")
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+
+
+	function traerTurnosFinalizadosTotalPorAnio($anio) {
+		$sql = "select
+			sum(td.costo) as subtotal,
+			sum(descuento) as descuento,
+			sum(td.costo) + sum(descuento) as total
+		from dbturnos t
+		inner join dbturnosdetalles td on t.idturno = td.refturnos
+		inner join dbclientes cli ON cli.idcliente = t.refclientes
+		inner join dbvehiculos veh ON veh.idvehiculo = t.refvehiculos
+		inner join tbmodelo mo ON mo.idmodelo = veh.refmodelo
+		inner join tbmarca ma ON ma.idmarca = mo.refmarca
+		inner join tbtipovehiculo ti ON ti.idtipovehiculo = veh.reftipovehiculo
+		inner join tbestados est ON est.idestado = t.refestados
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
+		where year(t.fechaingreso) = ".$anio."
+				and est.idestado = 1
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+
+
+	function traerTurnosFinalizadosTotalPorDesdeHasta($desde, $hasta) {
+		$sql = "select
+			sum(td.costo) as subtotal,
+			sum(descuento) as descuento,
+			sum(td.costo) + sum(descuento) as total
+		from dbturnos t
+		inner join dbturnosdetalles td on t.idturno = td.refturnos
+		inner join dbclientes cli ON cli.idcliente = t.refclientes
+		inner join dbvehiculos veh ON veh.idvehiculo = t.refvehiculos
+		inner join tbmodelo mo ON mo.idmodelo = veh.refmodelo
+		inner join tbmarca ma ON ma.idmarca = mo.refmarca
+		inner join tbtipovehiculo ti ON ti.idtipovehiculo = veh.reftipovehiculo
+		inner join tbestados est ON est.idestado = t.refestados
+		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
+		where t.fechaingreso between '".$desde."' and '".$hasta."'
+				and est.idestado = 1
 		order by 1";
 		$res = $this->query($sql,0);
 		return $res;
