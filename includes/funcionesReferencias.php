@@ -326,12 +326,24 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	$res = $this->query($sql,0);
 	return $res;
 	}
+
+	function modificarEstadoPorTurnos($id,$usuacrea,$refestados) {
+		$sql = "update dbturnos
+		set
+		usuacrea = '".($usuacrea)."',refestados = ".$refestados."
+		where idturno =".$id;
+		$res = $this->query($sql,0);
+		return $res;
+	}
 	
 	
-	function eliminarTurnos($id) {
-	$sql = "delete from dbturnos where idturno =".$id;
-	$res = $this->query($sql,0);
-	return $res;
+	function eliminarTurnos($id, $usuacrea) {
+		$sql = "update dbturnos
+			set
+			usuacrea = '".$usuacrea."',refestados = 2
+		where idturno =".$id;
+		$res = $this->query($sql,0);
+		return $res;
 	}
 	
 	

@@ -47,6 +47,12 @@ class Servicios {
 		$classFinalizar = '';
 		$classPagar = '';
 		$lblTask = '';
+
+		$classVar = '';
+		$icoVar = '';
+		$lblVar = '';
+
+
 		switch ($cantidad) {
 			case 99:
 				$cantidad = 8;
@@ -92,6 +98,15 @@ class Servicios {
 				$classPagar = 'varpagar';
 				$idresultados = "resultados";
 				$lblTask = 'Pagos';
+				break;
+			case 93:
+				$cantidad = 7;
+				$classMod = 'varmodificar';
+				$classVar	  = 'varestados';
+				$classEli = 'varborrar';
+				$icoVar = 'glyphicon glyphicon-transfer';
+				$lblVar = 'Cambiar Estado';
+				$idresultados = "resultados";
 				break;
 			default:
 				$classMod = 'varmodificar';
@@ -167,6 +182,12 @@ class Servicios {
 				if ($classEditar != '') {
 					$cadRows = $cadRows.'		<li>
 											<a href="javascript:void(0)" class="'.$classEditar.'" id="'.$row[0].'" >'.$lblEditar.'</a>
+											</li>';	
+				}
+
+				if ($classVar != '') {
+					$cadRows = $cadRows.'		<li>
+											<a href="javascript:void(0)" class="'.$classVar.'" id="'.$row[0].'" ><span class="'.$icoVar.'"></span> '.$lblVar.'</a>
 											</li>';	
 				}
 										

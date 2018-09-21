@@ -329,7 +329,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 				<div class="form-group col-md-3">
 					<label for="fechaingreso" class="control-label" style="text-align:left">Fecha De Ingreso</label>
-					<div class="input-group col-md-6">
+					<div class="input-group col-md-12">
 						<input class="form-control" type="text" value="" name="fechaingreso" id="fechaingreso"/>
 					</div>
 					
@@ -337,7 +337,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 										
 				<div class="form-group col-md-3">
 					<label for="horaentrada" class="control-label" style="text-align:left">Hora Entrada</label>
-					<div class="input-group col-md-6">
+					<div class="input-group col-md-12">
 						<input class="form-control" type="text" value="" name="horaentrada" id="horaentrada"/>
 					</div>
 					
@@ -347,7 +347,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 										
 				<div class="form-group col-md-3">
 					<label for="horasalida" class="control-label" style="text-align:left">Hora Salida</label>
-					<div class="input-group col-md-6">
+					<div class="input-group col-md-12">
 						<input class="form-control" type="text" value="" name="horasalida" id="horasalida"/>
 					</div>
 					
@@ -574,10 +574,12 @@ $(document).ready(function(){
 			if ($(this).prop('checked')) {
 				$('.subtotal').html(parseFloat($('.subtotal').html()) + parseFloat(costo));
 				$('.totaltiempo').html(parseInt($('.totaltiempo').html()) + parseInt(tiempo));
+				setearFechaSalida(parseInt($('.totaltiempo').html()));
 				$('#total').val(parseFloat($('.subtotal').html()));
 			} else {
 				$('.subtotal').html(parseFloat($('.subtotal').html()) - parseFloat(costo));
 				$('.totaltiempo').html(parseInt($('.totaltiempo').html()) - parseInt(tiempo));
+				setearFechaSalida(parseInt($('.totaltiempo').html()));
 				$('#total').val(parseFloat($('.subtotal').html()));
 			}
 			
@@ -694,7 +696,7 @@ $(document).ready(function(){
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
-		alert('asd');
+
 		if (validador() == "")
         {
 			//información del formulario
@@ -750,20 +752,54 @@ $(document).ready(function(){
 		}
     });
 
+    function addMinutes(date, minutes) {
+	    return new Date(date.getTime() + minutes*60000);
+	}
+
+    function setearFechaSalida(minutos) {
+    	var fechaEntrada = $('#horaentrada').datetimepicker('getValue');
+
+    	var fechaSalida = new Date(fechaEntrada);
+    	
+    	fechaSalida = addMinutes(fechaSalida, parseInt(minutos));
+
+    	//alert(fechaSalida);
+    	var mesNuevo = '0' + (fechaSalida.getMonth() + 1).toString();
+    	var diasNuevo = '0' + fechaSalida.getDate().toString();
+    	var horasNuevo = '0' + fechaSalida.getHours().toString();
+    	var minutosNuevo = '0' + fechaSalida.getMinutes().toString();
+
+    	var nuevaFecha = fechaSalida.getFullYear().toString() + '-' + mesNuevo.slice(-2) + '-' + diasNuevo.slice(-2) + ' ' + horasNuevo.slice(-2) + ':' + minutosNuevo.slice(-2);
+    	$('#horasalida').val(nuevaFecha);
+
+    }
+
 	$('#fechaingreso').datetimepicker({
 	dayOfWeekStart : 1,
-	format: 'Y-m-d H:i'
+	format: 'Y-m-d H:i',
+	defaultDate:new Date()
 	});
 	$.datetimepicker.setLocale('es');
 	$('#fechaingreso').datetimepicker({step:10});
 
+	$('#fechaingreso').val('<?php echo date('Y-m-d H:i'); ?>');
+
+
 	
 	$('#horaentrada').datetimepicker({
-	dayOfWeekStart : 1,
-	format: 'Y-m-d H:i'
+		format: 'Y-m-d H:i',
+		minDate:'<?php echo date('Y-m-d'); ?> 10:00',
+		onSelectDate:function(ct,$i){
+		  setearFechaSalida(parseInt($('.totaltiempo').html()));
+		},
+		onSelectTime:function(ct,$i){
+		  setearFechaSalida(parseInt($('.totaltiempo').html()));
+		}
 	});
 	$.datetimepicker.setLocale('es');
 	$('#horaentrada').datetimepicker({step:10});
+
+	$('#horaentrada').val('<?php echo date('Y-m-d H:i'); ?>');
 
 	$('#horasalida').datetimepicker({
 	dayOfWeekStart : 1,
@@ -771,6 +807,8 @@ $(document).ready(function(){
 	});
 	$.datetimepicker.setLocale('es');
 	$('#horasalida').datetimepicker({step:10});
+
+	$('#horasalida').val('<?php echo date('Y-m-d H:i'); ?>');
 
 	$('#fechanacimiento').datetimepicker({
 	dayOfWeekStart : 1,

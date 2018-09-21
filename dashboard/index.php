@@ -49,8 +49,12 @@ $cabeceras 		= "	<th>Ingreso</th>
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('3,4,5'),7);
-$lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('1'),7);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('3,4,5'),93);
+$lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('1'),93);
+
+
+$resEstado 	= $serviciosReferencias->traerEstados();
+$cadRefEstado 	= $serviciosFunciones->devolverSelectBox($resEstado,array(1),'');
 
 ?>
 
@@ -117,7 +121,7 @@ $lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosRe
         </div>
     	<div class="cuerpoBox">
         	<div class='row' style="margin-left:25px; margin-right:25px;">
-                <div class='alert'>
+                <div class='alert errorModificarEstado'>
                 
                 </div>
                 <div id='load'>
@@ -198,12 +202,24 @@ $lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosRe
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Pagos</h4>
+        <h4 class="modal-title" id="myModalLabel">Cambio de Estado</h4>
       </div>
-      <div class="modal-body userasignates">
-        
+      <div class="modal-body estados">
+        <div class="form-group col-md-6" style="display:block">
+			<label for="reftipomovimientos" class="control-label" style="text-align:left">Estado</label>
+			<div class="input-group col-md-12">
+				<select class="form-control" id="refestados" name="refestados">
+					<?php echo $cadRefEstado; ?>
+				</select>
+			</div>
+		</div>
+		<div class="form-group col-md-6" style="display:block">
+			<p>* Recuerde que si Finaliza/Cancela el turno, solo el Administrador podrá revertir esta situación.</p>
+		</div>
+        <input type="hidden" id="idturnoestado" name="idturnoestado" value="0">
       </div>
       <div class="modal-footer">
+      	<button type="button" class="btn btn-warning" data-dismiss="modal" id="modificarEstado">Modificar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -253,6 +269,35 @@ $(document).ready(function(){
 		  }
 	} );
 
+	
+	function modificarEstadoPorTurno(idturno, idestado) {
+		$.ajax({
+			data:  {id: idturno,
+					idestado: idestado,
+					accion: 'modificarEstadoPorTurno'},
+			url:   '../ajax/ajax.php',
+			type:  'post',
+			beforeSend: function () {
+					
+			},
+			success:  function (response) {
+				if (response != '') {
+					$(".alert").removeClass("alert-success");
+					$(".alert").removeClass("alert-danger");
+                    $(".alert").addClass("alert-danger");
+                    $(".errorModificarEstado").html('<strong>Error!</strong> '+response);
+				} else {
+					url = "index.php";
+					$(location).attr('href',url);
+				}
+			}
+		});
+	}
+
+	$('#modificarEstado').click(function() {
+		modificarEstadoPorTurno($('#idturnoestado').val(), $('#refestados').val());
+	});
+
 
 	$('#guardarcaja').click(function() {
 
@@ -289,6 +334,18 @@ $.ajax({
 
 traerCaja();
 	
+
+
+	$('table.table').on("click",'.varestados', function(){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$('#myModal2').modal();
+			$('#idturnoestado').val(usersid);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton cambiar estados
+
 
 	$('table.table').on("click",'.varborrar', function(){
 		  usersid =  $(this).attr("id");

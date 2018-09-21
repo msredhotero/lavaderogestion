@@ -275,8 +275,36 @@ case 'traerVehiculosPorCliente':
 traerVehiculosPorCliente($serviciosReferencias, $serviciosFunciones);
 break;
 
+case 'modificarEstadoPorTurno':
+modificarEstadoPorTurno($serviciosReferencias);
+break;
+
 }
 /* Fin */
+
+function modificarEstadoPorTurno($serviciosReferencias) {
+	session_start();
+	$perfil = $_SESSION['idroll_predio'];
+
+	$id = $_POST['id'];
+	$idEstado = $_POST['idestado'];
+
+	$resTurno = $serviciosReferencias->traerTurnosPorId($id);
+
+	$idEstadoActual = mysql_result($resTurno,0,'refestados');
+
+	if (($perfil != 1) && (($idEstadoActual == 1) || ($idEstadoActual == 2))) {
+		echo 'No tiene permisos para modificar el Estado';
+	} else {
+		$res = $serviciosReferencias->modificarEstadoPorTurnos($id, $_SESSION['usua_predio'], $idEstado);
+		if ($res == true) { 
+			echo ''; 
+		} else { 
+			echo 'Huvo un error al modificar datos'; 
+		} 
+	}
+
+}
 
 function traerVehiculosPorCliente($serviciosReferencias, $serviciosFunciones) {
 	$idcliente = $_POST['id'];
