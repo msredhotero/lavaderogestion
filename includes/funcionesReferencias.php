@@ -146,15 +146,20 @@ function insertarOtrosingresosegresos($reftipomovimientos,$monto,$usuacrea) {
 
 
 	function traerOtrosingresosegresosTotalPorFecha($fecha) {
-		$sql = "select
-					(case when tip.categoria = 2 then sum(o.monto) else 0 end) as ingresos,
-					(case when tip.categoria > 2 then sum(o.monto) else 0 end) as egresos
+		$sql = "	select
+		sum(m.ingresos) as ingresos,
+        sum(m.egresos) as egresos
+    from (
+		select
+					sum(case when tip.categoria = 2 then (o.monto) else 0 end) as ingresos,
+					sum(case when tip.categoria > 2 then (o.monto) else 0 end) as egresos
 		from dbotrosingresosegresos o
 		inner join tbtipomovimientos tip ON tip.idtipomovimiento = o.reftipomovimientos
 		where year(o.fechacrea) = year('".$fecha."') 
 				and month(o.fechacrea) = month('".$fecha."') 
 				and day(o.fechacrea) = day('".$fecha."')
-		order by 1";
+		group by tip.categoria
+		) m";
 		$res = $this->query($sql,0);
 		return $res;
 	}

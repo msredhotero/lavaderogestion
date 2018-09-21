@@ -212,7 +212,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 							<h4>Ingresos/Egresos:</h4>
 						</div>
 						<div class="col-md-6 monto">
-							<h4>$ <?php echo number_format($ingresos,2,',','.'); ?> / $ <?php echo number_format($egresos,2,',','.'); ?></h4>
+							<h4>$ <?php echo number_format($ingresos,2,',','.'); ?> / <span style="color:#0B991A;"> -$ <?php echo number_format($egresos,2,',','.'); ?></span></h4>
 						</div>
 					</div>
 				</div>
