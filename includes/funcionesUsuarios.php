@@ -282,21 +282,21 @@ function enviarEmail($destinatario,$asunto,$cuerpo) {
 }
 
 
-function insertarUsuario($usuario,$password,$refroll,$email,$nombrecompleto) {
+function insertarUsuario($usuario,$password,$refroles,$email,$nombrecompleto) {
 	$sql = "INSERT INTO dbusuarios
 				(idusuario,
 				usuario,
 				password,
-				refroll,
+				refroles,
 				email,
 				nombrecompleto)
 			VALUES
 				('',
-				'".utf8_decode($usuario)."',
-				'".utf8_decode($password)."',
-				".$refroll.",
-				'".utf8_decode($email)."',
-				'".utf8_decode($nombrecompleto)."')";
+				'".($usuario)."',
+				'".($password)."',
+				".$refroles.",
+				'".($email)."',
+				'".($nombrecompleto)."')";
 	if ($this->existeUsuario($email) == true) {
 		return "Ya existe el usuario";	
 	}
@@ -310,13 +310,13 @@ function insertarUsuario($usuario,$password,$refroll,$email,$nombrecompleto) {
 }
 
 
-function modificarUsuario($id,$usuario,$password,$refroll,$email,$nombrecompleto) {
+function modificarUsuario($id,$usuario,$password,$refroles,$email,$nombrecompleto) {
 	$sql = "UPDATE dbusuarios
 			SET
 				usuario = '".utf8_decode($usuario)."',
 				password = '".utf8_decode($password)."',
 				email = '".utf8_decode($email)."',
-				refroles = ".$refroll.",
+				refroles = ".$refroles.",
 				nombrecompleto = '".utf8_decode($nombrecompleto)."'
 			WHERE idusuario = ".$id;
 	$res = $this->query($sql,0);

@@ -80,7 +80,7 @@ $cabeceras 		= "	<th>Ingreso</th>
 
 $formulario 	= $serviciosFunciones->camposTabla($insertar ,$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGrid(),7);
+$lstCargados 	= $serviciosFunciones->camposTablaViewSinAcciones($cabeceras,$serviciosReferencias->traerTurnosGrid(),7);
 
 
 /*************** para el formulario de clientes */

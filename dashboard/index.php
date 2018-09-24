@@ -50,8 +50,8 @@ $cabeceras 		= "	<th>Ingreso</th>
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('3,4,5'),93);
-$lstCargadosMora 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('1'),93);
-
+$lstCargadosMora = $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('1'),93);
+$lstCargadosCancelados = $serviciosFunciones->camposTablaView($cabeceras,$serviciosReferencias->traerTurnosGridPorEstadoIn('2'),93);
 
 $resEstado 	= $serviciosReferencias->traerEstados();
 $cadRefEstado 	= $serviciosFunciones->devolverSelectBox($resEstado,array(1),'');
@@ -135,7 +135,7 @@ $cadRefEstado 	= $serviciosFunciones->devolverSelectBox($resEstado,array(1),'');
     
     <div class="boxInfoLargo tile-stats tile-white stat-tile">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Finalizados</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Turnos Finalizados</p>
         	
         </div>
     	<div class="cuerpoBox">
@@ -150,6 +150,24 @@ $cadRefEstado 	= $serviciosFunciones->devolverSelectBox($resEstado,array(1),'');
     		<?php echo $lstCargadosMora; ?>
     	</div>
     </div>
+
+		<div class="boxInfoLargo tile-stats tile-white stat-tile">
+        <div id="headBoxInfo">
+        	<p style="color: #fff; font-size:18px; height:16px;">Turnos Cancelados</p>
+        	
+        </div>
+    	<div class="cuerpoBox">
+        	<div class='row' style="margin-left:25px; margin-right:25px;">
+                <div class='alert'>
+                
+                </div>
+                <div id='load'>
+                
+                </div>
+            </div>
+    		<?php echo $lstCargadosCancelados; ?>
+    	</div>
+    </div>
     
     
     
@@ -161,6 +179,42 @@ $cadRefEstado 	= $serviciosFunciones->devolverSelectBox($resEstado,array(1),'');
 
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="myModalDetalle" tabindex="1" style="z-index:500000;" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Mensaje</h4>
+      </div>
+      <div class="modal-body detalleTurno">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModalError" tabindex="1" style="z-index:500000;" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Mensaje</h4>
+      </div>
+      <div class="modal-body errorModal">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="modal fade" id="myModalcaja" tabindex="1" style="z-index:500000;" role="dialog" aria-labelledby="myModalLabel">
@@ -278,18 +332,31 @@ $(document).ready(function(){
 			url:   '../ajax/ajax.php',
 			type:  'post',
 			beforeSend: function () {
-					
+					$('.errorModal').html('');
 			},
 			success:  function (response) {
 				if (response != '') {
-					$(".alert").removeClass("alert-success");
-					$(".alert").removeClass("alert-danger");
-                    $(".alert").addClass("alert-danger");
-                    $(".errorModificarEstado").html('<strong>Error!</strong> '+response);
+					$('#myModalError').modal();
+					$('.errorModal').html('<h3 style="color:red;"><span class="glyphicon glyphicon-remove-circle"></span> <strong>Error!</strong> '+response + '</h3>');
 				} else {
 					url = "index.php";
 					$(location).attr('href',url);
 				}
+			}
+		});
+	}
+
+	function traerDetallePorTurno(idturno) {
+		$.ajax({
+			data:  {id: idturno,
+					accion: 'traerTurnosdetallesPorTurno'},
+			url:   '../ajax/ajax.php',
+			type:  'post',
+			beforeSend: function () {
+					$('.detalleTurno').html('');
+			},
+			success:  function (response) {
+				$('.detalleTurno').html(response);
 			}
 		});
 	}
@@ -343,6 +410,16 @@ traerCaja();
 			$('#idturnoestado').val(usersid);
 		  } else {
 			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton cambiar estados
+
+	$('table.table').on("click",'.vardetalle', function(){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+				traerDetallePorTurno(usersid);
+				$('#myModalDetalle').modal();
+		  } else {
+				alert("Error, vuelva a realizar la acción.");	
 		  }
 	});//fin del boton cambiar estados
 

@@ -51,6 +51,10 @@ class Servicios {
 		$classVar = '';
 		$icoVar = '';
 		$lblVar = '';
+		$classVar2 = '';
+		$icoVar2 = '';
+		$lblVar2 = '';
+		$classModNuevo = 'dejar asi';
 
 
 		switch ($cantidad) {
@@ -106,7 +110,11 @@ class Servicios {
 				$classEli = 'varborrar';
 				$icoVar = 'glyphicon glyphicon-transfer';
 				$lblVar = 'Cambiar Estado';
+				$classVar2	  = 'vardetalle';
+				$icoVar2 = 'glyphicon glyphicon-list-alt';
+				$lblVar2 = 'Servicios';
 				$idresultados = "resultados";
+				$classModNuevo = '';
 				break;
 			default:
 				$classMod = 'varmodificar';
@@ -150,11 +158,12 @@ class Servicios {
 										<span class="sr-only">Toggle Dropdown</span>
 										</button>
 										
-										<ul class="dropdown-menu" role="menu">
-										   
-											<li>
+										<ul class="dropdown-menu" role="menu">';
+				if ($classModNuevo != '') {						   
+					$cadRows = $cadRows.'	<li>
 											<a href="javascript:void(0)" class="'.$classMod.'" id="'.$row[0].'"><span class="glyphicon glyphicon-pencil"></span> Modificar</a>
 											</li>';
+				}
 				if ($classFinalizar != '') {
 					$cadRows = $cadRows.'		<li>
 											<a href="javascript:void(0)" class="'.$classFinalizar.'" id="'.$row[0].'" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span> Finalizar</a>
@@ -190,6 +199,12 @@ class Servicios {
 											<a href="javascript:void(0)" class="'.$classVar.'" id="'.$row[0].'" ><span class="'.$icoVar.'"></span> '.$lblVar.'</a>
 											</li>';	
 				}
+
+				if ($classVar2 != '') {
+					$cadRows = $cadRows.'		<li>
+											<a href="javascript:void(0)" class="'.$classVar2.'" id="'.$row[0].'" ><span class="'.$icoVar2.'"></span> '.$lblVar2.'</a>
+											</li>';	
+				}
 										
 				$cadRows = $cadRows.'		<li>
 											<a href="javascript:void(0)" class="'.$classEli.'" id="'.$row[0].'"><span class="glyphicon glyphicon-remove"></span> Borrar</a>
@@ -218,6 +233,107 @@ class Servicios {
 										
 											<li>
 											<a href="javascript:void(0)" class="'.$classEli.'" id="'.$row[0].'">Delete</a>
+											</li>
+											
+										</ul>
+									</div>
+								</td>
+							</tr>
+				';
+			}
+		}
+		
+		//'.utf8_encode($cadRows).' verificar al subir al servidor
+		
+		$cadView = $cadView.'
+			<table class="table table-striped table-responsive" id="example">
+            	<thead>
+                	<tr>
+                    	'.$cabeceras.'
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="'.$idresultados.'">
+
+                	'.($cadRows).'
+                </tbody>
+            </table>
+			<div style="margin-bottom:85px; margin-right:60px;"></div>
+		
+		';	
+		
+		
+		return $cadView;
+	}
+
+
+	function camposTablaViewSinAcciones($cabeceras,$datos,$cantidad) {
+		$cadView = '';
+		$cadRows = '';
+		$classTask = '';
+		$classVer = '';
+		$classEditar = '';
+		$classFinalizar = '';
+		$classPagar = '';
+		$lblTask = '';
+
+		$classVar = '';
+		$icoVar = '';
+		$lblVar = '';
+		$classMod = '';
+		$classEli = 'varborrar';
+		$idresultados = 'resultados';
+
+
+
+		
+		/*if ($cantidad == 99) {
+			$cantidad = 5;
+			$classMod = 'varmodificargoleadores';
+			$classEli = 'varborrargoleadores';
+			$idresultados = "resultadosgoleadores";
+		} else {
+			$classMod = 'varmodificar';
+			$classEli = 'varborrar';
+			$idresultados = "resultados";
+		}*/
+		while ($row = mysql_fetch_array($datos)) {
+			$cadsubRows = '';
+			$cadRows = $cadRows.'
+			
+					<tr class="'.$row[0].'">
+                        	';
+			
+			
+			for ($i=1;$i<=$cantidad;$i++) {
+				
+				$cadsubRows = $cadsubRows.'<td><div style="height:60px;overflow:auto;">'.$row[$i].'</div></td>';	
+			}
+			
+			
+			if ($classMod != '') { 
+				$cadRows = $cadRows.'
+								'.$cadsubRows.'
+								</tr>
+				';
+			} else {
+				
+				$cadRows = $cadRows.'
+								'.$cadsubRows.'
+								<td>
+									
+									<div class="btn-group">
+										<button class="btn btn-success" type="button">Acciones</button>
+										
+										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" type="button">
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										
+										<ul class="dropdown-menu" role="menu">
+										
+											<li>
+											<a href="javascript:void(0)" class="'.$classEli.'" id="'.$row[0].'">Eliminar</a>
 											</li>
 											
 										</ul>

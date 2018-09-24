@@ -338,6 +338,7 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	
 	
 	function eliminarTurnos($id, $usuacrea) {
+
 		$sql = "update dbturnos
 			set
 			usuacrea = '".$usuacrea."',refestados = 2
@@ -453,7 +454,7 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 		inner join tbestados est ON est.idestado = t.refestados
 		inner join tbtipomovimientos tip ON tip.idtipomovimiento = t.reftipomovimientos
 		where year(t.fechaingreso) = year('".$fecha."') and month(t.fechaingreso) = month('".$fecha."') and day(t.fechaingreso) = day('".$fecha."')
-		order by 1";
+		order by t.horaentrada";
 		$res = $this->query($sql,0);
 		return $res;
 	}
@@ -583,6 +584,25 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	$res = $this->query($sql,0);
 	return $res;
 	}
+
+
+	function traerTurnosdetallesPorTurno($id) {
+		$sql = "select
+		t.idturnodetalle,
+		t.descripcion,
+		t.costo,
+		t.tiempo
+		from dbturnosdetalles t
+		inner join dbturnos tur ON tur.idturno = t.refturnos
+		inner join dbclientes cl ON cl.idcliente = tur.refclientes
+		inner join dbvehiculos ve ON ve.idvehiculo = tur.refvehiculos
+		inner join tbestados es ON es.idestado = tur.refestados
+		inner join tbtipomovimientos ti ON ti.idtipomovimiento = tur.reftipomovimientos
+		where t.refturnos = ".$id."
+		order by 1";
+		$res = $this->query($sql,0);
+		return $res;
+		}
 	
 	
 	function traerTurnosdetallesPorId($id) {
@@ -590,6 +610,52 @@ function insertarProveedores($razonsocial,$nombre,$apellido,$cuit,$direccion,$te
 	$res = $this->query($sql,0);
 	return $res;
 	}
+
+	function traerVentasPorAno($anio) {
+		$sql = "SELECT 
+					m.mes AS mes,
+					m.nombremes AS nombremes,
+					COALESCE(v.total, 0) AS total
+				FROM
+					tbmeses m
+						LEFT JOIN
+					(SELECT 
+						SUM(td.costo) AS total, MONTH(ve.fechaingreso) AS mes
+					FROM
+						dbturnos ve
+					inner
+					join	dbturnosdetalles td
+					on		ve.idturno = td.refturnos
+					WHERE
+						YEAR(ve.fechaingreso) = ".$anio."
+							AND ve.refestados = 1
+					GROUP BY MONTH(ve.fechaingreso)) v ON v.mes = m.mes
+				ORDER BY m.mes";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+function traerHorariosTopPorAnio($anio) {
+	$sql = "SELECT 
+				m.hora AS hora,
+				COALESCE(v.cantidad, 0) AS cantidad
+			FROM
+				tbhorarios m
+					LEFT JOIN
+				(SELECT 
+					count(*) AS cantidad, DATE_FORMAT(ve.fechaingreso,'%H:%i:%s') AS hora
+				FROM
+					dbturnos ve
+
+				WHERE
+					YEAR(ve.fechaingreso) = ".$anio."
+						AND ve.refestados = 1
+				GROUP BY DATE_FORMAT(ve.fechaingreso,'%H:%i:%s')) v ON hour(v.hora) = hour(m.hora) 
+				and (time_to_sec((m.hora)) - time_to_sec((v.hora)) ) between -300 and 299
+			ORDER BY m.hora";
+	$res = $this->query($sql,0);
+	return $res;
+}
 	
 	/* Fin */
 	/* /* Fin de la Tabla: dbturnosdetalles*/

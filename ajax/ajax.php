@@ -279,8 +279,96 @@ case 'modificarEstadoPorTurno':
 modificarEstadoPorTurno($serviciosReferencias);
 break;
 
+case 'traerTurnosdetallesPorTurno':
+traerTurnosdetallesPorTurno($serviciosReferencias);
+break;
+
 }
 /* Fin */
+
+function traerTurnosdetallesPorTurno($serviciosReferencias) {
+	$id = $_POST['id'];
+
+	$resTurno = $serviciosReferencias->traerTurnosPorId($id);
+	$res = $serviciosReferencias->traerTurnosdetallesPorTurno($id);
+	$resEstado = $serviciosReferencias->traerEstadosPorId(mysql_result($resTurno,0,'refestados'));
+
+	$cad3 = '';
+	$total = 0;
+	$subtotal = 0;
+	$tiempo = 0;
+
+	$panelColor = '';
+	switch (mysql_result($resTurno,0,'refestados')) {
+		case 1:
+			$panelColor = 'panel-success';
+			break;
+		case 2:
+			$panelColor = 'panel-danger';
+			break;
+		case 3:
+			$panelColor = 'panel-info';
+			break;
+		case 4:
+			$panelColor = 'panel-info';
+			break;
+		case 5:
+			$panelColor = 'panel-primary';
+			break;
+		default:
+			$panelColor = 'panel-info';
+			break;
+	}
+
+	//////////////////////////////////////////////////////busquedajugadores/////////////////////
+	$cad3 = $cad3.'
+				<div class="col-md-12">
+				<div class="panel '.$panelColor.'">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">Detalle de los Servicios Adquiridos - Estado: '.mysql_result($resEstado,0,'estado').'</h3>
+                                	
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table id="example" class="table table-responsive table-striped" style="font-size:1.2em; padding:2px;">
+						<thead>
+                        <tr>
+                        	<th align="left">Servicio</th>
+							<th align="left">Precio</th>
+                            <th align="left">Tiempo Estimado</th>
+                        </tr>
+						</thead>
+						<tbody id="resultadosProd">';
+	while ($rowJ = mysql_fetch_array($res)) {
+		$subtotal += $rowJ['costo'];
+		$tiempo += $rowJ['tiempo'];
+
+		$cad3 .= '<tr>
+					<td>'.($rowJ['descripcion']).'</td>
+					<td>'.number_format( $rowJ['costo'],2,',','.').'</td>
+					<td>'.$rowJ['tiempo'].' Minutos</td>
+				 </tr>';
+	}
+	$total = mysql_result($resTurno,0,'descuento') + $subtotal;
+	$cad3 = $cad3.'</tbody>
+					<tfoot>
+						<tr>
+							<th style="color: red;">Descuento: $ '.number_format(mysql_result($resTurno,0,'descuento'),2,',','.').'</th>
+							<th style="color: #55CD59;">SubTotal: $ '.number_format($subtotal,2,',','.').'</th>
+							<th>Tiempo: '.$tiempo.' Minutos</th>
+						</tr>
+						<tr>
+							<th style="color: #2AA42E;" colspan="3" style="font-size:1.2em;">Monto Final: $ '.number_format($total,2,',','.').'</th>
+						</tr>
+					</tfoot>
+                    </table></div>
+                    </div>
+					</div>';
+						
+	echo $cad3;
+}
 
 function modificarEstadoPorTurno($serviciosReferencias) {
 	session_start();
@@ -296,7 +384,7 @@ function modificarEstadoPorTurno($serviciosReferencias) {
 	if (($perfil != 1) && (($idEstadoActual == 1) || ($idEstadoActual == 2))) {
 		echo 'No tiene permisos para modificar el Estado';
 	} else {
-		$res = $serviciosReferencias->modificarEstadoPorTurnos($id, $_SESSION['usua_predio'], $idEstado);
+		$res = $serviciosReferencias->modificarEstadoPorTurnos($id, $_SESSION['nombre_predio'], $idEstado);
 		if ($res == true) { 
 			echo ''; 
 		} else { 
@@ -600,8 +688,10 @@ function insertarCaja($serviciosReferencias) {
 
 
 	function eliminarTurnos($serviciosReferencias) {
+		session_start();
+
 		$id = $_POST['id'];
-		$res = $serviciosReferencias->eliminarTurnos($id);
+		$res = $serviciosReferencias->eliminarTurnos($id, $_SESSION['nombre_predio']);
 		echo $res;
 	}
 
