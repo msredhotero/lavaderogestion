@@ -45,6 +45,9 @@ $lblCambio	 	= array("fechaingreso","refclientes", "refvehiculos","horaentrada",
 $lblreemplazo	= array("Fecha de Ingreso", "Cliente", "Vehiculo","Hora Entrada","Hora Salida","Estados","Tipo Movimiento");
 
 
+$resVehiculos = $serviciosReferencias->traerVehiculosClientes();
+$cadRefVehiculos 	= $serviciosFunciones->devolverSelectBox($resVehiculos,array(1,3,4),' - ');
+
 $res1 	= $serviciosReferencias->traerClientes();
 $cadRef 	= $serviciosFunciones->devolverSelectBox($res1,array(1,2),', ');
 
@@ -217,6 +220,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 		
 		
 	</style>
+	<link rel="stylesheet" href="../../css/chosen.css">
     
    
    <link href="../../css/perfect-scrollbar.css" rel="stylesheet">
@@ -247,26 +251,30 @@ if ($_SESSION['refroll_predio'] != 1) {
         	<div class="row">
 
 				<div class="form-group col-md-6" style="display:block">
-					<label for="refclientes" class="control-label" style="text-align:left">Cliente</label>
-					<div class="input-group col-md-12">
-						<select class="form-control" id="refclientes" name="refclientes">
-						<?php echo $cadRef; ?>
-						</select>
-						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-						<span style="background-color:#55CD59;  color: white;  font-weight: bold;" class="input-group-addon agregarCliente"><a style="color:white;text-decoration: none;" href="javascript:void(0)">Nuevo</a></span>
-					</div>
-				</div>
-
-
-				<div class="form-group col-md-6" style="display:block">
 					<label for="refvehiculos" class="control-label" style="text-align:left">Vehiculo</label>
 					<div class="input-group col-md-12">
-						<select class="form-control" id="refvehiculos" name="refvehiculos">
+						<select style="width:100%;" data-placeholder="selecione la Patente..." id="refvehiculos" name="refvehiculos" class="chosen-select" tabindex="2">
+						<?php echo $cadRef2; ?>
 						</select>
 						<span class="input-group-addon"><span class="glyphicon glyphicon-plus-sign"></span></span>
 						<span style="background-color:#55CD59;  color: white;  font-weight: bold;" class="input-group-addon agregarVehiculo"><a style="color:white;text-decoration: none;" href="javascript:void(0)">Agregar</a></span>
 					</div>
 				</div>
+
+				<div class="form-group col-md-6" style="display:block">
+					<label for="refclientes" class="control-label" style="text-align:left">Cliente</label>
+					<div class="input-group col-md-12">
+						<select class="form-control" id="refclientes" name="refclientes">
+						
+						</select>
+						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+						<!--<span style="background-color:#F68A09;  color: white;  font-weight: bold; cursor: pointer;" class="input-group-addon"><span class="glyphicon glyphicon-zoom-in buscarVehiculo"></span></span>-->
+						<span style="background-color:#55CD59;  color: white;  font-weight: bold;" class="input-group-addon agregarCliente"><a style="color:white;text-decoration: none;" href="javascript:void(0)">Nuevo</a></span>
+					</div>
+				</div>
+
+
+				
 
 				<div class="form-group col-md-12">
 					<div class="datagrid">
@@ -473,6 +481,9 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 		<div class="row">
 		<?php echo str_replace('anio','anio2',str_replace('patente','patente2',$formularioVehiculoSimple)); ?>
+		<div class="col-md-12">
+		<h4>* Recuerde que el vehiculo se le asignara al cliente "General"</h4>
+		</div>
 		<input type="hidden" id="refclientes2" name="refclientes2" value=""/>
 		</div>
       </div>
@@ -536,9 +547,11 @@ $(document).ready(function(){
 		$('#modalVehiculos').modal();
 	});
 
-	traerVehiculosPorCliente($('#refclientes').val());
-
 	$('#refclientes').change(function() {
+		traerVehiculosPorCliente($('#refclientes').val());
+	});
+
+	$('.buscarVehiculo').click(function() {
 		traerVehiculosPorCliente($('#refclientes').val());
 	});
 
@@ -561,6 +574,32 @@ $(document).ready(function(){
 			}
 		});
 	}
+
+	function traerClientesPorVehiculo(Vehiculo) {
+		$.ajax({
+			data:  {id: Vehiculo, 
+					accion: 'traerClientesPorVehiculo'},
+			url:   '../../ajax/ajax.php',
+			type:  'post',
+			beforeSend: function () {
+				$('#refclientes').html('');	
+			},
+			success:  function (response) {
+				if (response == '') {
+					$('#refclientes').append('<option value="1">General</option>');
+				} else {
+					$('#refclientes').append(response);
+				}
+					
+			}
+		});
+	}
+
+	traerClientesPorVehiculo($('#refvehiculos').val());
+
+	$('#refvehiculos').change(function() {
+		traerClientesPorVehiculo($('#refvehiculos').val());
+	});
 
 	
 	$("#lstServicios").on("click",'.seleccionar', function(){

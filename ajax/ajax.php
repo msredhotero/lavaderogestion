@@ -241,6 +241,10 @@ case 'eliminarCaja':
 eliminarCaja($serviciosReferencias); 
 break; 
 
+case 'cerrarCaja':
+cerrarCaja($serviciosReferencias);
+break;
+
 case 'insertarTurnos': 
 insertarTurnos($serviciosReferencias); 
 break; 
@@ -283,8 +287,21 @@ case 'traerTurnosdetallesPorTurno':
 traerTurnosdetallesPorTurno($serviciosReferencias);
 break;
 
+case 'traerClientesPorVehiculo':
+traerClientesPorVehiculo($serviciosReferencias, $serviciosFunciones);
+break;
+
 }
 /* Fin */
+
+function traerClientesPorVehiculo($serviciosReferencias, $serviciosFunciones) {
+	$idvehiculo = $_POST['id'];
+
+	$res = $serviciosReferencias->traerClientesPorVehiculo($idvehiculo);
+	$cad = $serviciosFunciones->devolverSelectBox($res,array(2),', ');
+
+	echo $cad;
+}
 
 function traerTurnosdetallesPorTurno($serviciosReferencias) {
 	$id = $_POST['id'];
@@ -466,32 +483,79 @@ function traerCajadiariaPorFecha($serviciosReferencias) {
 }
 
 function insertarCajadiaria($serviciosReferencias) {
+	session_start();
+
 	$monto = $_POST['inicio']; 
 	$montoinicio = $_POST['inicio']; 
-	$montofinal = $_POST['inicio']; 
+	$montofinal = 0; 
 	$fecha = $_POST['fecha']; 
 	
-	$res = $serviciosReferencias->insertarCaja($monto,$montoinicio,$montofinal,$fecha); 
-	
-	if ((integer)$res > 0) { 
+	$existe = $serviciosReferencias->traerCajadiariaPorFecha($fecha);
+
+	if (mysql_num_rows($existe) > 0) {
+		$id = mysql_result($existe,0,0); 
+
+		$montofinal = mysql_result($existe,0,3);
+		
+		$res = $serviciosReferencias->modificarCaja($id,$monto,$montoinicio,$montofinal,$fecha,$_SESSION['nombre_predio']); 
+		
+		if ($res == true) { 
+			echo ''; 
+		} else { 
+			echo 'Huvo un error al modificar datos'; 
+		} 
+	} else {
+		$res = $serviciosReferencias->insertarCaja($monto,$montoinicio,$montofinal,$fecha,$_SESSION['nombre_predio']); 
+		if ((integer)$res > 0) { 
 		echo ''; 
-	} else { 
+		} else { 
 		echo 'Huvo un error al insertar datos';	 
-	} 
+		} 
+	}
 }
 
 function insertarCaja($serviciosReferencias) { 
+
+	session_start();
+
 	$monto = $_POST['monto']; 
 	$montoinicio = $_POST['montoinicio']; 
 	$montofinal = $_POST['montofinal']; 
 	$fecha = $_POST['fecha']; 
-	$res = $serviciosReferencias->insertarCaja($monto,$montoinicio,$montofinal,$fecha); 
-	if ((integer)$res > 0) { 
-	echo ''; 
-	} else { 
-	echo 'Huvo un error al insertar datos';	 
-	} 
+
+	$existe = $serviciosReferencias->traerCajadiariaPorFecha($fecha);
+
+	if (mysql_num_rows($existe) > 0) {
+		$id = mysql_result($existe,0,0); 
+		$monto = $_POST['monto']; 
+		$montoinicio = $_POST['montoinicio']; 
+		$montofinal = $_POST['montofinal']; 
+		$fecha = $_POST['fecha']; 
+		
+		$res = $serviciosReferencias->modificarCaja($id,$monto,$montoinicio,$montofinal,$fecha,$_SESSION['nombre_predio']); 
+		
+		if ($res == true) { 
+			echo ''; 
+		} else { 
+			echo 'Huvo un error al modificar datos'; 
+		} 
+	} else {
+		$res = $serviciosReferencias->insertarCaja($monto,$montoinicio,$montofinal,$fecha); 
+		if ((integer)$res > 0) { 
+		echo ''; 
+		} else { 
+		echo 'Huvo un error al insertar datos';	 
+		} 
+	}
 } 
+
+function cerrarCaja($serviciosReferencias) {
+	session_start();
+
+	$res = $serviciosReferencias->cerrarCaja($_SESSION['nombre_predio']);
+
+	echo $res;
+}
 
 
 	function modificarCaja($serviciosReferencias) { 

@@ -38,6 +38,51 @@ function insertarCaja($monto,$montoinicio,$montofinal,$fecha,$usuacrea) {
 	$res = $this->query($sql,0); 
 	return $res; 
 	} 
+
+	function cerrarCaja($usuario) {
+		$resCaja = $this->traerCajadiariaPorFecha(date('Y-m-d'));
+
+		$resServicios = $this->traerTurnosTotalPorFechaEstados(date('Y-m-d'),'1');
+
+		$resIngresosEgresos = $this->traerOtrosingresosegresosTotalPorFecha(date('Y-m-d'));
+
+		$subtotal = 0;
+		$total = 0;
+		$egresos = 0;
+		$ingresos = 0;
+		$caja = 0;
+
+		if (mysql_num_rows($resCaja) > 0) {
+			$caja = mysql_result($resCaja,0,1);
+		} else {
+			$caja = 0;
+		}
+
+		if (mysql_num_rows($resServicios) > 0) {
+			$subtotal = mysql_result($resServicios,0,2);
+		} else {
+			$subtotal = 0;
+		}
+
+
+		if (mysql_num_rows($resIngresosEgresos) > 0) {
+			$ingresos = mysql_result($resIngresosEgresos,0,0);
+			$egresos = mysql_result($resIngresosEgresos,0,1);
+		} else {
+			$ingresos = 0;
+			$egresos = 0;
+		}
+
+		$resTimeline = $this->traerTurnosGridPorFecha(date('Y-m-d'));
+
+		$total = $caja + $subtotal + $ingresos - $egresos;
+
+		$resCaja = $this->traerCajadiariaPorFecha(date('Y-m-d'));
+
+		$res = $this->modificarCaja(mysql_result($resCaja,0,0),mysql_result($resCaja,0,1),mysql_result($resCaja,0,2), $total,date('Y-m-d H:i:s'),$usuario);
+
+		echo '';
+	}
 	
 	
 	function eliminarCaja($id) { 
@@ -1180,7 +1225,30 @@ function traerVehiculosPorClientes($idclientes) {
 	order by 1";
 	$res = $this->query($sql,0);
 	return $res;
-	}
+}
+
+
+function traerClientesPorVehiculo($idvehiculo) {
+	$sql = "select
+	v.idvehiculo,
+	v.patente,
+	concat(cc.apellido,' ',cc.nombre) as titular,
+	ma.marca,
+	mo.modelo,
+	tip.tipovehiculo,
+	v.anio,
+	v.observaciones
+	from dbvehiculos v
+	inner join tbmodelo mo ON mo.idmodelo = v.refmodelo
+	inner join tbmarca ma ON ma.idmarca = mo.refmarca
+	inner join tbtipovehiculo tip ON tip.idtipovehiculo = v.reftipovehiculo
+	inner join dbclientevehiculos cv on cv.refvehiculos = v.idvehiculo
+	inner join dbclientes cc on cv.refclientes = cc.idcliente
+	where v.idvehiculo = ".$idvehiculo."
+	order by 1";
+	$res = $this->query($sql,0);
+	return $res;
+}
 
 
 function traerVehiculosPorId($id) {
